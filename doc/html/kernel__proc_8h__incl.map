@@ -1,0 +1,15 @@
+<map id="kernel_proc.h" name="kernel_proc.h">
+<area shape="rect" id="node1" title="The process table and process management." alt="" coords="513,5,622,32"/>
+<area shape="rect" id="node2" href="$tinyos_8h.html" title="Public kernel API." alt="" coords="533,155,607,181"/>
+<area shape="rect" id="node4" href="$kernel__sched_8h.html" title="TinyOS kernel: The Scheduler API." alt="" coords="557,80,676,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="581,229,652,256"/>
+<area shape="rect" id="node5" href="$bios_8h.html" title="The Virtual Machine API." alt="" coords="631,155,693,181"/>
+<area shape="rect" id="node7" href="$util_8h.html" title="Tinyos utility code." alt="" coords="347,155,401,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="677,229,767,256"/>
+<area shape="rect" id="node8" title=" " alt="" coords="487,229,557,256"/>
+<area shape="rect" id="node9" title=" " alt="" coords="193,229,259,256"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,229,76,256"/>
+<area shape="rect" id="node11" title=" " alt="" coords="100,229,168,256"/>
+<area shape="rect" id="node12" title=" " alt="" coords="284,229,363,256"/>
+<area shape="rect" id="node13" title=" " alt="" coords="387,229,462,256"/>
+</map>

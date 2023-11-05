@@ -1,0 +1,65 @@
+\hypertarget{structpipe__s}{}\doxysection{pipe\+\_\+s Struct Reference}
+\label{structpipe__s}\index{pipe\_s@{pipe\_s}}
+
+
+A pair of file ids, describing a pipe.  
+
+
+
+
+{\ttfamily \#include $<$tinyos.\+h$>$}
+
+
+
+Collaboration diagram for pipe\+\_\+s\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=133pt]{structpipe__s__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}} \mbox{\hyperlink{structpipe__s_ad0839b4f9b1fdb0241411952203f18aa}{read}}
+\item 
+\mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}} \mbox{\hyperlink{structpipe__s_a69acc9cdf5f10195c43491e3ffa98cb1}{write}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A pair of file ids, describing a pipe. 
+
+This structure is initialized by the {\ttfamily \mbox{\hyperlink{group__syscalls_gab6355ce54e047c31538ed5ed9108b5b3}{Pipe()}}} system call with two file descriptors, for the read and write ends of the pipe respectively. Writing bytes to the write end using {\ttfamily \mbox{\hyperlink{group__syscalls_gaf046f003fde24f79fb395c250137856c}{Write()}}} will make them available at the read end, unsing {\ttfamily \mbox{\hyperlink{group__syscalls_ga3e9dc545a789eb45b2d356eabbac3ee3}{Read()}}}. 
+
+Definition at line 508 of file tinyos.\+h.
+
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structpipe__s_ad0839b4f9b1fdb0241411952203f18aa}\label{structpipe__s_ad0839b4f9b1fdb0241411952203f18aa}} 
+\index{pipe\_s@{pipe\_s}!read@{read}}
+\index{read@{read}!pipe\_s@{pipe\_s}}
+\doxysubsubsection{\texorpdfstring{read}{read}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}} pipe\+\_\+s\+::read}
+
+The read end of the pipe 
+
+Definition at line 509 of file tinyos.\+h.
+
+\mbox{\Hypertarget{structpipe__s_a69acc9cdf5f10195c43491e3ffa98cb1}\label{structpipe__s_a69acc9cdf5f10195c43491e3ffa98cb1}} 
+\index{pipe\_s@{pipe\_s}!write@{write}}
+\index{write@{write}!pipe\_s@{pipe\_s}}
+\doxysubsubsection{\texorpdfstring{write}{write}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}} pipe\+\_\+s\+::write}
+
+The write end of the pipe 
+
+Definition at line 510 of file tinyos.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tinyos_8h}{tinyos.\+h}}\end{DoxyCompactItemize}

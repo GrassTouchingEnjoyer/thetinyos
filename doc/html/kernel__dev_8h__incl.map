@@ -1,0 +1,13 @@
+<map id="kernel_dev.h" name="kernel_dev.h">
+<area shape="rect" id="node1" title="Device management." alt="" coords="417,5,521,32"/>
+<area shape="rect" id="node2" href="$util_8h.html" title="Tinyos utility code." alt="" coords="343,80,397,107"/>
+<area shape="rect" id="node10" href="$bios_8h.html" title="The Virtual Machine API." alt="" coords="586,80,647,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,155,76,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="101,155,167,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="581,155,652,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="192,155,263,181"/>
+<area shape="rect" id="node7" title=" " alt="" coords="287,155,355,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="379,155,457,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="482,155,557,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="677,155,767,181"/>
+</map>

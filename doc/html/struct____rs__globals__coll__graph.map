@@ -1,0 +1,11 @@
+<map id="__rs_globals" name="__rs_globals">
+<area shape="rect" id="node1" title=" " alt="" coords="5,631,148,825"/>
+<area shape="rect" id="node2" href="$structCondVar.html" title="Condition variables." alt="" coords="15,20,133,112"/>
+<area shape="rect" id="node4" href="$structprocess__control__block.html" title="Process Control Block." alt="" coords="169,189,336,325"/>
+<area shape="rect" id="node3" href="$structresource__list__node.html" title="List node." alt="" coords="350,432,494,553"/>
+<area shape="rect" id="node5" href="$structfile__control__block.html" title="The file control block." alt="" coords="606,682,742,774"/>
+<area shape="rect" id="node7" href="$structthread__control__block.html" title="The thread control block." alt="" coords="211,616,369,840"/>
+<area shape="rect" id="node6" href="$structfile__operations.html" title="The device&#45;specific file operations table." alt="" coords="732,5,851,127"/>
+<area shape="rect" id="node9" href="$structdevice__control__block.html" title="Device control block." alt="" coords="643,211,801,303"/>
+<area shape="rect" id="node8" href="$structcore__control__block.html" title="Core control block." alt="" coords="307,932,451,1009"/>
+</map>

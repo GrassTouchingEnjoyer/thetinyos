@@ -1,0 +1,97 @@
+\hypertarget{unit__testing_8h}{}\doxysection{unit\+\_\+testing.\+h File Reference}
+\label{unit__testing_8h}\index{unit\_testing.h@{unit\_testing.h}}
+
+
+A library for coding and running unit tests.  
+
+
+{\ttfamily \#include \char`\"{}bios.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tinyos.\+h\char`\"{}}\newline
+Include dependency graph for unit\+\_\+testing.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{unit__testing_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{unit__testing_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structprogram__arguments}{program\+\_\+arguments}}
+\begin{DoxyCompactList}\small\item\em Global arguments for test execution. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTest}{Test}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structTest}{Test}} descriptor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__Testing_ga2a77d2f2c5b698c69c19e1f8782bf709}{MAX\+\_\+\+TESTS}}~1024
+\begin{DoxyCompactList}\small\item\em Maximum number of tests on the command line. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_ga9be407f8744aff436633d34c62591cb9}{ASSERT\+\_\+\+MSG}}(expr,  format, ...)
+\begin{DoxyCompactList}\small\item\em Like ASSERT but with a custom message. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_ga28301f76c53b643912da7c538f74e2c6}{ASSERT}}(expr)~ \mbox{\hyperlink{group__Testing_ga9be407f8744aff436633d34c62591cb9}{ASSERT\+\_\+\+MSG}}(expr, \char`\"{}\%s(\%d)\+: ASSERT failed\+: \%s \textbackslash{}n\char`\"{},\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, \#expr)
+\begin{DoxyCompactList}\small\item\em Fail the test if an expression is false. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_ga03ce1c3343e1d176f3680bcebd054820}{FAIL}}(failure\+\_\+message)~ \mbox{\hyperlink{group__Testing_ga9be407f8744aff436633d34c62591cb9}{ASSERT\+\_\+\+MSG}}(0, \char`\"{}\%s(\%d)\+: FAILURE\+: \%s \textbackslash{}n\char`\"{},\+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+, (failure\+\_\+message))
+\begin{DoxyCompactList}\small\item\em Fail the test printing a message. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_ga1ac76218e138d4f495b9a695c5da5b9b}{FUDGE}}(var)~memset(\&(var), 170, sizeof(var))
+\begin{DoxyCompactList}\small\item\em Fill in the bytes of a variable with a weird value\+: 10101010 or 0x\+AA. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_gaad2dd72565852b91c809cd4685833b17}{DEFAULT\+\_\+\+TIMEOUT}}~10
+\begin{DoxyCompactList}\small\item\em Default time per test. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_gadeb59351f026036674baa906f32ccd5c}{BARE\+\_\+\+TEST}}(tname,  descr, ...)
+\begin{DoxyCompactList}\small\item\em Declare a standard test function. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_gadaaab439c094503b6ed7c313ad082f10}{BOOT\+\_\+\+TEST}}(tname,  descr, ...)
+\begin{DoxyCompactList}\small\item\em Declare a test function run as the boot function of the tinyos kernel. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__Testing_ga3e52396e466caa8cba74e1ae603817d3}{TEST\+\_\+\+SUITE}}(tname,  descr, ...)
+\begin{DoxyCompactList}\small\item\em Declare a collectio of test functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structTest}{Test}} \mbox{\hyperlink{group__Testing_gab605bbc0fbecce8cdbcaa2ff8a260e4b}{Test}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structTest}{Test}} descriptor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__Testing_gae6e489086f229b5c8289c94fba0244fa}\label{group__Testing_gae6e489086f229b5c8289c94fba0244fa}} 
+enum {\bfseries Test\+\_\+type} \{ {\bfseries NO\+\_\+\+FUNC}
+, {\bfseries BARE\+\_\+\+FUNC}
+, {\bfseries BOOT\+\_\+\+FUNC}
+, {\bfseries SUITE\+\_\+\+FUNC}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__Testing_ga2e36933a48fbca44bb782f881ddceb20}{MSG}} (const char $\ast$format,...) \+\_\+\+\_\+attribute\+\_\+\+\_\+((format(printf
+\begin{DoxyCompactList}\small\item\em Print formatted messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Testing_ga0c4e801b8c3317b802fa4e80e1e26de2}{expect}} (\mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} term, const char $\ast$pattern)
+\begin{DoxyCompactList}\small\item\em Expect to see some bytes printed to terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Testing_ga0f97d30c4cd1370bcac6d7f4775d6789}{sendme}} (\mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} term, const char $\ast$pattern)
+\begin{DoxyCompactList}\small\item\em Ask to receive some bytes from the keyboard. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Testing_gac023795199b4f577a9181ac45e62b170}{run\+\_\+test}} (const \mbox{\hyperlink{structTest}{Test}} $\ast$test)
+\begin{DoxyCompactList}\small\item\em The main routine to run a test. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Testing_ga4663cf3fb390b2a6d9cf1943f21b9934}{register\+\_\+test}} (const \mbox{\hyperlink{structTest}{Test}} $\ast$test)
+\begin{DoxyCompactList}\small\item\em Called from the main program to register a test (usually a suite). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Testing_ga91dbdb97056588b088b689582abc2382}{run\+\_\+program}} (int argc, char $\ast$$\ast$argv, const \mbox{\hyperlink{structTest}{Test}} $\ast$default\+\_\+test)
+\begin{DoxyCompactList}\small\item\em Called from the main program to parse arguments and run tests. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Testing_ga106e4293a3520dae79707bdf492dc68b}{is\+Debugger\+Attached}} ()
+\begin{DoxyCompactList}\small\item\em Detect if the test process is found to run under the debugger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structprogram__arguments}{program\+\_\+arguments}} \mbox{\hyperlink{group__Testing_ga77ee99593f12b26362902169d4df3eab}{ARGS}}
+\item 
+void int \mbox{\hyperlink{group__Testing_ga35895e417ef253455c9cf365cb66d87c}{FLAG\+\_\+\+FAILURE}}
+\begin{DoxyCompactList}\small\item\em Flag failure during a test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A library for coding and running unit tests. 
+

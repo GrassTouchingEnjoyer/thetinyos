@@ -1,0 +1,162 @@
+\hypertarget{kernel__cc_8h}{}\doxysection{kernel\+\_\+cc.\+h File Reference}
+\label{kernel__cc_8h}\index{kernel\_cc.h@{kernel\_cc.h}}
+
+
+Concurrency and preemption control API.  
+
+
+{\ttfamily \#include \char`\"{}kernel\+\_\+sys.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}kernel\+\_\+sched.\+h\char`\"{}}\newline
+Include dependency graph for kernel\+\_\+cc.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel__cc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel__cc_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{kernel__cc_8h_a327d5485981b426c5e7079387dd3073b}\label{kernel__cc_8h_a327d5485981b426c5e7079387dd3073b}} 
+\#define {\bfseries kernel\+\_\+wait}(cv,  cause)~ \mbox{\hyperlink{kernel__cc_8h_abe7f999775e4f5a56201bf88a9eeb2a1}{kernel\+\_\+wait\+\_\+wchan}}((cv),(cause),\+\_\+\+\_\+\+FUNCTION\+\_\+\+\_\+, \mbox{\hyperlink{group__scheduler_ga462fb2ba6f2af99ec3d021ded436bb65}{NO\+\_\+\+TIMEOUT}})
+\item 
+\mbox{\Hypertarget{kernel__cc_8h_ada476fc3746c5de3a120ff33b26e3c13}\label{kernel__cc_8h_ada476fc3746c5de3a120ff33b26e3c13}} 
+\#define {\bfseries kernel\+\_\+timedwait}(cv,  cause,  timeout)~ \mbox{\hyperlink{kernel__cc_8h_abe7f999775e4f5a56201bf88a9eeb2a1}{kernel\+\_\+wait\+\_\+wchan}}((cv),(cause),\+\_\+\+\_\+\+FUNCTION\+\_\+\+\_\+, (timeout))
+\item 
+\#define \mbox{\hyperlink{kernel__cc_8h_af936bcf607a61848cfea21c119f30905}{preempt\+\_\+off}}~\mbox{\hyperlink{bios_8h_afec1cd080e34866f6497b18f1bac8e8f}{cpu\+\_\+disable\+\_\+interrupts}}()
+\begin{DoxyCompactList}\small\item\em Set the preemption status for the current core. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{kernel__cc_8h_ac8efed506a60c7c6f02514e878a4004b}{preempt\+\_\+on}}~\mbox{\hyperlink{bios_8h_a10055a90cf57a2a22fa9193922f9f2a8}{cpu\+\_\+enable\+\_\+interrupts}}()
+\begin{DoxyCompactList}\small\item\em Easily turn preemption off. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{kernel__cc_8h_a64cbb83e8857ffaf703722363ac94f05}\label{kernel__cc_8h_a64cbb83e8857ffaf703722363ac94f05}} 
+void \mbox{\hyperlink{kernel__cc_8h_a64cbb83e8857ffaf703722363ac94f05}{kernel\+\_\+lock}} ()
+\begin{DoxyCompactList}\small\item\em Lock the kernel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8h_a8ca062a9a1c570f34398bd177cb96e58}\label{kernel__cc_8h_a8ca062a9a1c570f34398bd177cb96e58}} 
+void \mbox{\hyperlink{kernel__cc_8h_a8ca062a9a1c570f34398bd177cb96e58}{kernel\+\_\+unlock}} ()
+\begin{DoxyCompactList}\small\item\em Unlock the kernel. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{kernel__cc_8h_abe7f999775e4f5a56201bf88a9eeb2a1}{kernel\+\_\+wait\+\_\+wchan}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv, enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}} cause, const char $\ast$wchan, \mbox{\hyperlink{bios_8h_ae7291e5cd742fb9bc6d4aaa0d51bd0ee}{Timer\+Duration}} timeout)
+\begin{DoxyCompactList}\small\item\em Wait on a condition variable using the kernel lock. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__cc_8h_a167cdb3f2a2285becf553405210eb08a}{kernel\+\_\+signal}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Signal a kernel condition to one waiter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8h_a6ab8c1febc779de0c176d4e8a101ec5b}\label{kernel__cc_8h_a6ab8c1febc779de0c176d4e8a101ec5b}} 
+void \mbox{\hyperlink{kernel__cc_8h_a6ab8c1febc779de0c176d4e8a101ec5b}{kernel\+\_\+broadcast}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Signal a kernel condition to all waiters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__cc_8h_ac108cbd1eb069858a5ed9e576069c464}{kernel\+\_\+sleep}} (\mbox{\hyperlink{group__scheduler_ga6c969c169777f82c104cf73e501df70f}{Thread\+\_\+state}} state, enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}} cause)
+\begin{DoxyCompactList}\small\item\em Put thread to sleep, unlocking the kernel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Concurrency and preemption control API. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{kernel__cc_8h_af936bcf607a61848cfea21c119f30905}\label{kernel__cc_8h_af936bcf607a61848cfea21c119f30905}} 
+\index{kernel\_cc.h@{kernel\_cc.h}!preempt\_off@{preempt\_off}}
+\index{preempt\_off@{preempt\_off}!kernel\_cc.h@{kernel\_cc.h}}
+\doxysubsubsection{\texorpdfstring{preempt\_off}{preempt\_off}}
+{\footnotesize\ttfamily \#define preempt\+\_\+off~\mbox{\hyperlink{bios_8h_afec1cd080e34866f6497b18f1bac8e8f}{cpu\+\_\+disable\+\_\+interrupts}}()}
+
+
+
+Set the preemption status for the current core. 
+
+Preemption is disabled by disabling interrupts.
+
+A typical non-\/preemptive section is declared as 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{int} preempt = \mbox{\hyperlink{kernel__cc_8h_af936bcf607a61848cfea21c119f30905}{preempt\_off}};}
+\DoxyCodeLine{..}
+\DoxyCodeLine{    \textcolor{comment}{// do stuff without preemption }}
+\DoxyCodeLine{...}
+\DoxyCodeLine{if(preempt) \mbox{\hyperlink{kernel__cc_8h_ac8efed506a60c7c6f02514e878a4004b}{preempt\_on}};}
+
+\end{DoxyCode}
+
+
+\begin{DoxyReturn}{Returns}
+the previous preemption status, where 0 means that preemption was previously off, and 1 means that it was on.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{kernel__cc_8h_ac8efed506a60c7c6f02514e878a4004b}{preempt\+\_\+on}} 
+\end{DoxySeeAlso}
+
+
+Definition at line 103 of file kernel\+\_\+cc.\+h.
+
+\mbox{\Hypertarget{kernel__cc_8h_ac8efed506a60c7c6f02514e878a4004b}\label{kernel__cc_8h_ac8efed506a60c7c6f02514e878a4004b}} 
+\index{kernel\_cc.h@{kernel\_cc.h}!preempt\_on@{preempt\_on}}
+\index{preempt\_on@{preempt\_on}!kernel\_cc.h@{kernel\_cc.h}}
+\doxysubsubsection{\texorpdfstring{preempt\_on}{preempt\_on}}
+{\footnotesize\ttfamily \#define preempt\+\_\+on~\mbox{\hyperlink{bios_8h_a10055a90cf57a2a22fa9193922f9f2a8}{cpu\+\_\+enable\+\_\+interrupts}}()}
+
+
+
+Easily turn preemption off. 
+
+\begin{DoxySeeAlso}{See also}
+set\+\_\+core\+\_\+preemption 
+\end{DoxySeeAlso}
+
+
+Definition at line 108 of file kernel\+\_\+cc.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{kernel__cc_8h_a167cdb3f2a2285becf553405210eb08a}\label{kernel__cc_8h_a167cdb3f2a2285becf553405210eb08a}} 
+\index{kernel\_cc.h@{kernel\_cc.h}!kernel\_signal@{kernel\_signal}}
+\index{kernel\_signal@{kernel\_signal}!kernel\_cc.h@{kernel\_cc.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_signal()}{kernel\_signal()}}
+{\footnotesize\ttfamily void kernel\+\_\+signal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$}]{cv }\end{DoxyParamCaption})}
+
+
+
+Signal a kernel condition to one waiter. 
+
+This call must be made 
+
+Definition at line 271 of file kernel\+\_\+cc.\+c.
+
+\mbox{\Hypertarget{kernel__cc_8h_ac108cbd1eb069858a5ed9e576069c464}\label{kernel__cc_8h_ac108cbd1eb069858a5ed9e576069c464}} 
+\index{kernel\_cc.h@{kernel\_cc.h}!kernel\_sleep@{kernel\_sleep}}
+\index{kernel\_sleep@{kernel\_sleep}!kernel\_cc.h@{kernel\_cc.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_sleep()}{kernel\_sleep()}}
+{\footnotesize\ttfamily void kernel\+\_\+sleep (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__scheduler_ga6c969c169777f82c104cf73e501df70f}{Thread\+\_\+state}}}]{state,  }\item[{enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}}}]{cause }\end{DoxyParamCaption})}
+
+
+
+Put thread to sleep, unlocking the kernel. 
+
+System calls should call this function instead of {\ttfamily sleep\+\_\+releasing}, as the kernel lock is not a mutex. 
+
+Definition at line 281 of file kernel\+\_\+cc.\+c.
+
+\mbox{\Hypertarget{kernel__cc_8h_abe7f999775e4f5a56201bf88a9eeb2a1}\label{kernel__cc_8h_abe7f999775e4f5a56201bf88a9eeb2a1}} 
+\index{kernel\_cc.h@{kernel\_cc.h}!kernel\_wait\_wchan@{kernel\_wait\_wchan}}
+\index{kernel\_wait\_wchan@{kernel\_wait\_wchan}!kernel\_cc.h@{kernel\_cc.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_wait\_wchan()}{kernel\_wait\_wchan()}}
+{\footnotesize\ttfamily int kernel\+\_\+wait\+\_\+wchan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$}]{cv,  }\item[{enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}}}]{cause,  }\item[{const char $\ast$}]{wchan,  }\item[{\mbox{\hyperlink{bios_8h_ae7291e5cd742fb9bc6d4aaa0d51bd0ee}{Timer\+Duration}}}]{timeout }\end{DoxyParamCaption})}
+
+
+
+Wait on a condition variable using the kernel lock. 
+
+\begin{DoxyReturn}{Returns}
+1 if signalled, 0 if not 
+\end{DoxyReturn}
+
+
+Definition at line 252 of file kernel\+\_\+cc.\+c.
+

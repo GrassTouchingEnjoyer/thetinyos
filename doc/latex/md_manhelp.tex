@@ -1,0 +1,60 @@
+help -\/ How to get started building Tiny\+OS 3\hypertarget{md_manhelp_autotoc_md6}{}\doxysection{SYNOPSIS}\label{md_manhelp_autotoc_md6}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make}
+\DoxyCodeLine{make help}
+\DoxyCodeLine{make clean}
+\DoxyCodeLine{make DEBUG=0 clean all}
+\DoxyCodeLine{make depend}
+
+\end{DoxyCode}
+\hypertarget{md_manhelp_autotoc_md7}{}\doxysection{DESCRIPTION}\label{md_manhelp_autotoc_md7}
+\hypertarget{md_manhelp_autotoc_md8}{}\doxysubsection{Building tinyos using make}\label{md_manhelp_autotoc_md8}
+To build your code easily, a complex Makefile is provided. This manual presents several ways to run make using this Makefile.\hypertarget{md_manhelp_autotoc_md9}{}\doxysubsection{Basic building}\label{md_manhelp_autotoc_md9}
+Just type the command 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make}
+
+\end{DoxyCode}
+ This command will compile all the files and build all the executable programs and the examples. The built programs will contain debugging information, so that you can run the debugger on them.\hypertarget{md_manhelp_autotoc_md10}{}\doxysubsection{Recompiling all the files}\label{md_manhelp_autotoc_md10}
+When there are weird errors, it is possible that something was corrupted. To remove all binary files as well as all named pipes, give the following command\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make clean}
+
+\end{DoxyCode}
+ The you can rebuild everything by giving the command 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make}
+
+\end{DoxyCode}
+\hypertarget{md_manhelp_autotoc_md11}{}\doxysubsection{Building with full optimizations on}\label{md_manhelp_autotoc_md11}
+To see how fast your code is, you can build with full optimizations. Give the following\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make DEBUG=0 clean all}
+
+\end{DoxyCode}
+\hypertarget{md_manhelp_autotoc_md12}{}\doxysubsection{Re-\/making the dependencies}\label{md_manhelp_autotoc_md12}
+When you change the \#include headers in some file, you should rebuild the dependencies. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make depend}
+
+\end{DoxyCode}
+ This way you are sure that make re-\/builds everything it needs to rebuild every time.\hypertarget{md_manhelp_autotoc_md13}{}\doxysection{EXTERNAL PROGRAMS}\label{md_manhelp_autotoc_md13}
+\hypertarget{md_manhelp_autotoc_md14}{}\doxysubsection{Using valgrind}\label{md_manhelp_autotoc_md14}
+If you have not installed valgrind, the code will be built without support for it. But valgrind is very useful for debugging. You can install it with the following command\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ sudo apt install valgrind}
+
+\end{DoxyCode}
+\hypertarget{md_manhelp_autotoc_md15}{}\doxysubsection{Building the documentation}\label{md_manhelp_autotoc_md15}
+The code of tinyos comes with a lot of useful documentation. To build it, you need a program called \textquotesingle{}doxygen\textquotesingle{}. Then, you can view the documentation in your browser. Here is how to install doxygen 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ sudo apt install doxygen graphvis}
+
+\end{DoxyCode}
+ Then, you can build the documentation, by the following command\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ make doc}
+
+\end{DoxyCode}
+ 

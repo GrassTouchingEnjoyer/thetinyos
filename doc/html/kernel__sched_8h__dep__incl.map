@@ -1,0 +1,13 @@
+<map id="kernel_sched.h" name="kernel_sched.h">
+<area shape="rect" id="node1" title="TinyOS kernel: The Scheduler API." alt="" coords="549,5,668,32"/>
+<area shape="rect" id="node2" href="$kernel__cc_8c.html" title="The implementation for concurrency control ." alt="" coords="5,155,100,181"/>
+<area shape="rect" id="node3" href="$kernel__cc_8h.html" title="Concurrency and preemption control API." alt="" coords="384,80,479,107"/>
+<area shape="rect" id="node4" href="$kernel__dev_8c_source.html" title=" " alt="" coords="124,155,227,181"/>
+<area shape="rect" id="node6" href="$kernel__sched_8c_source.html" title=" " alt="" coords="509,155,628,181"/>
+<area shape="rect" id="node7" href="$kernel__streams_8c_source.html" title=" " alt="" coords="653,155,786,181"/>
+<area shape="rect" id="node9" href="$kernel__init_8c_source.html" title=" " alt="" coords="810,155,911,181"/>
+<area shape="rect" id="node10" href="$kernel__proc_8h.html" title="The process table and process management." alt="" coords="509,80,618,107"/>
+<area shape="rect" id="node11" href="$kernel__threads_8c_source.html" title=" " alt="" coords="936,155,1065,181"/>
+<area shape="rect" id="node5" href="$kernel__proc_8c_source.html" title=" " alt="" coords="377,155,485,181"/>
+<area shape="rect" id="node8" href="$kernel__sys_8c_source.html" title=" " alt="" coords="251,155,353,181"/>
+</map>

@@ -1,0 +1,143 @@
+\hypertarget{tinyoslib_8h}{}\doxysection{tinyoslib.\+h File Reference}
+\label{tinyoslib_8h}\index{tinyoslib.h@{tinyoslib.h}}
+
+
+Tiny\+OS standard library header file.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}tinyos.\+h\char`\"{}}\newline
+Include dependency graph for tinyoslib.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{tinyoslib_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=329pt]{tinyoslib_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbarrier}{barrier}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tinyoslib_8h_a982fa8b14079099acca6c2ed6eb8a80a}\label{tinyoslib_8h_a982fa8b14079099acca6c2ed6eb8a80a}} 
+\#define {\bfseries BARRIER\+\_\+\+INIT}~((\mbox{\hyperlink{structbarrier}{barrier}})\{ \mbox{\hyperlink{group__syscalls_ga96be0bfc33e7e113099c7546798bec99}{MUTEX\+\_\+\+INIT}}, \mbox{\hyperlink{group__syscalls_ga6a7055a466bff255172e05f6ec82d792}{COND\+\_\+\+INIT}}, 0, 0\})
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}\label{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}} 
+typedef int($\ast$ \mbox{\hyperlink{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}{Program}}) (size\+\_\+t argc, const char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em A declaration for C-\/like main programs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tinyoslib_8h_a8804c1e27c03722573d67b649fb635de}\label{tinyoslib_8h_a8804c1e27c03722573d67b649fb635de}} 
+typedef struct \mbox{\hyperlink{structbarrier}{barrier}} {\bfseries barrier}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+FILE $\ast$ \mbox{\hyperlink{tinyoslib_8h_a8f1a14eaa13a383f7c12be56abc4ff4d}{fidopen}} (\mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}} fid, const char $\ast$mode)
+\begin{DoxyCompactList}\small\item\em Open a C stream on a tinyos file descriptor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tinyoslib_8h_a4b99e52f6d50e0f1d1080cf59beab04b}\label{tinyoslib_8h_a4b99e52f6d50e0f1d1080cf59beab04b}} 
+void {\bfseries tinyos\+\_\+replace\+\_\+stdio} ()
+\item 
+\mbox{\Hypertarget{tinyoslib_8h_a6e78397853f151751db73e9b400ca4ce}\label{tinyoslib_8h_a6e78397853f151751db73e9b400ca4ce}} 
+void {\bfseries tinyos\+\_\+restore\+\_\+stdio} ()
+\item 
+\mbox{\Hypertarget{tinyoslib_8h_a5fccd2ce8700c35cdef057a45e0f72ed}\label{tinyoslib_8h_a5fccd2ce8700c35cdef057a45e0f72ed}} 
+void {\bfseries tinyos\+\_\+pseudo\+\_\+console} ()
+\item 
+int \mbox{\hyperlink{tinyoslib_8h_a0e11b5da87f467679adbb23883328c2d}{Execute}} (\mbox{\hyperlink{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}{Program}} prog, size\+\_\+t argc, const char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Execute a new process, passing it the given arguments. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{tinyoslib_8h_ab98738d69f4b198fbcad1a6f2e20a44d}{Parse\+Proc\+Info}} (\mbox{\hyperlink{structprocinfo}{procinfo}} $\ast$pinfo, \mbox{\hyperlink{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}{Program}} $\ast$prog, int argc, const char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Try to reclaim the arguments of a process. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tinyoslib_8h_a1972c31e2d810d52971bafff741d7253}\label{tinyoslib_8h_a1972c31e2d810d52971bafff741d7253}} 
+void {\bfseries Barrier\+Sync} (\mbox{\hyperlink{structbarrier}{barrier}} $\ast$bar, unsigned int n)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Tiny\+OS standard library header file. 
+
+Small non-\/kernel routines for wrapping tinyos functionality go here. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tinyoslib_8h_a0e11b5da87f467679adbb23883328c2d}\label{tinyoslib_8h_a0e11b5da87f467679adbb23883328c2d}} 
+\index{tinyoslib.h@{tinyoslib.h}!Execute@{Execute}}
+\index{Execute@{Execute}!tinyoslib.h@{tinyoslib.h}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily int Execute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}{Program}}}]{prog,  }\item[{size\+\_\+t}]{argc,  }\item[{const char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+Execute a new process, passing it the given arguments. 
+
+The underlying implementation uses the Exec system call, to create a new process.
+
+By convention, argument argv\mbox{[}0\mbox{]} is assumed to be the program name, although any string is actually acceptable. 
+
+Definition at line 148 of file tinyoslib.\+c.
+
+\mbox{\Hypertarget{tinyoslib_8h_a8f1a14eaa13a383f7c12be56abc4ff4d}\label{tinyoslib_8h_a8f1a14eaa13a383f7c12be56abc4ff4d}} 
+\index{tinyoslib.h@{tinyoslib.h}!fidopen@{fidopen}}
+\index{fidopen@{fidopen}!tinyoslib.h@{tinyoslib.h}}
+\doxysubsubsection{\texorpdfstring{fidopen()}{fidopen()}}
+{\footnotesize\ttfamily FILE$\ast$ fidopen (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__syscalls_ga5097222c5f0da97d92d4712359abc38f}{Fid\+\_\+t}}}]{fid,  }\item[{const char $\ast$}]{mode }\end{DoxyParamCaption})}
+
+
+
+Open a C stream on a tinyos file descriptor. 
+
+This call returns a new FILE pointer on success and NULL on failure. 
+
+Definition at line 49 of file tinyoslib.\+c.
+
+\mbox{\Hypertarget{tinyoslib_8h_ab98738d69f4b198fbcad1a6f2e20a44d}\label{tinyoslib_8h_ab98738d69f4b198fbcad1a6f2e20a44d}} 
+\index{tinyoslib.h@{tinyoslib.h}!ParseProcInfo@{ParseProcInfo}}
+\index{ParseProcInfo@{ParseProcInfo}!tinyoslib.h@{tinyoslib.h}}
+\doxysubsubsection{\texorpdfstring{ParseProcInfo()}{ParseProcInfo()}}
+{\footnotesize\ttfamily int Parse\+Proc\+Info (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocinfo}{procinfo}} $\ast$}]{pinfo,  }\item[{\mbox{\hyperlink{tinyoslib_8h_ab518accf2c30e915a8250c0ae308aefd}{Program}} $\ast$}]{prog,  }\item[{int}]{argc,  }\item[{const char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+Try to reclaim the arguments of a process. 
+
+Given a \mbox{\hyperlink{structprocinfo}{procinfo}} object returned by a \mbox{\hyperlink{group__syscalls_gaf326b11574cdc84a9e21b9d860076821}{Open\+Info}} stream, if this process was executed by \mbox{\hyperlink{tinyoslib_8h_a0e11b5da87f467679adbb23883328c2d}{Execute}}, try to reclaim the arguments passed to it.
+
+If the process was not executed by \mbox{\hyperlink{tinyoslib_8h_a0e11b5da87f467679adbb23883328c2d}{Execute}}, or if its arguments were too long, this effort may fail, in which case -\/1 is returned.
+
+Else, the {\ttfamily pinfo} argument buffer defined by {\ttfamily (pinfo-\/$>$argl, pinfo-\/$>$args)} is parsed. Let it contain {\ttfamily N} arguments. Then,
+\begin{DoxyItemize}
+\item if {\ttfamily prog} is non-\/\+NULL, {\ttfamily $\ast$prog} is filled with a pointer to the function executed by {\ttfamily Execute} 
+\item if {\ttfamily argv} is non-\/\+NULL, it is assumed that it points to an array of strings, of size argc. Then, min(argc, N) locations of this array are initialized from the arguments of {\ttfamily pinfo}.
+\item finally, N is returned.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pinfo} & the procinfo object to process. \\
+\hline
+{\em prog} & if not NULL, the location to hold the program\textquotesingle{}s address. \\
+\hline
+{\em argc} & the length of parameter {\ttfamily argv} \\
+\hline
+{\em argv} & if not NULL, a string vector of size argc \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if {\ttfamily pinfo} is successfully parsed, the number of arguments is returned, else -\/1 is returned. 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file tinyoslib.\+c.
+

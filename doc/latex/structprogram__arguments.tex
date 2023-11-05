@@ -1,0 +1,96 @@
+\hypertarget{structprogram__arguments}{}\doxysection{program\+\_\+arguments Struct Reference}
+\label{structprogram__arguments}\index{program\_arguments@{program\_arguments}}
+
+
+Global arguments for test execution.  
+
+
+
+
+{\ttfamily \#include $<$unit\+\_\+testing.\+h$>$}
+
+
+
+Collaboration diagram for program\+\_\+arguments\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{structprogram__arguments__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structprogram__arguments_a373cc9d546fdd5ca2c75e42300caf2e6}\label{structprogram__arguments_a373cc9d546fdd5ca2c75e42300caf2e6}} 
+int \mbox{\hyperlink{structprogram__arguments_a373cc9d546fdd5ca2c75e42300caf2e6}{show\+\_\+tests}}
+\begin{DoxyCompactList}\small\item\em Flag that we just print the available tests. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structprogram__arguments_ab075ba9c1c9d3b650c7490717ed6391e}\label{structprogram__arguments_ab075ba9c1c9d3b650c7490717ed6391e}} 
+int \mbox{\hyperlink{structprogram__arguments_ab075ba9c1c9d3b650c7490717ed6391e}{verbose}}
+\begin{DoxyCompactList}\small\item\em Flag verbose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structprogram__arguments_ae952a1ee415137013201280b500796c7}\label{structprogram__arguments_ae952a1ee415137013201280b500796c7}} 
+int \mbox{\hyperlink{structprogram__arguments_ae952a1ee415137013201280b500796c7}{use\+\_\+color}}
+\begin{DoxyCompactList}\small\item\em Flag use\+\_\+color. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structprogram__arguments_ac8d013f1348ee6c7287fd974561b4f47}\label{structprogram__arguments_ac8d013f1348ee6c7287fd974561b4f47}} 
+int \mbox{\hyperlink{structprogram__arguments_ac8d013f1348ee6c7287fd974561b4f47}{fork}}
+\begin{DoxyCompactList}\small\item\em Flag to signal fork. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structprogram__arguments_ab9717e16b92f14aa8c54dbf4a2d2b7b1}{ncore\+\_\+list}}
+\item 
+\mbox{\Hypertarget{structprogram__arguments_ad063b1ce13702392eb2a64792488d505}\label{structprogram__arguments_ad063b1ce13702392eb2a64792488d505}} 
+int \mbox{\hyperlink{structprogram__arguments_ad063b1ce13702392eb2a64792488d505}{core\+\_\+list}} \mbox{[}\mbox{\hyperlink{bios_8h_a009855593b59738d24dbfc236edb3b14}{MAX\+\_\+\+CORES}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em List with number of cores. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structprogram__arguments_a48fbd16e4ce7ab5438078817c4931108}{nterm\+\_\+list}}
+\item 
+\mbox{\Hypertarget{structprogram__arguments_ab05abd5478458bb551479eb3e3dc75b1}\label{structprogram__arguments_ab05abd5478458bb551479eb3e3dc75b1}} 
+int \mbox{\hyperlink{structprogram__arguments_ab05abd5478458bb551479eb3e3dc75b1}{term\+\_\+list}} \mbox{[}\mbox{\hyperlink{bios_8h_a4e7d162c7c35103b42768ff4a5c73905}{MAX\+\_\+\+TERMINALS}}+1\mbox{]}
+\begin{DoxyCompactList}\small\item\em List with number of terminals. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structprogram__arguments_a8b96bf14afced6bae0d45424ab2fac57}{ntests}}
+\item 
+\mbox{\Hypertarget{structprogram__arguments_a1db9e2ccc5b4309d559617d2b327e527}\label{structprogram__arguments_a1db9e2ccc5b4309d559617d2b327e527}} 
+const struct \mbox{\hyperlink{structTest}{Test}} $\ast$ \mbox{\hyperlink{structprogram__arguments_a1db9e2ccc5b4309d559617d2b327e527}{tests}} \mbox{[}\mbox{\hyperlink{group__Testing_ga2a77d2f2c5b698c69c19e1f8782bf709}{MAX\+\_\+\+TESTS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Tests to run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Global arguments for test execution. 
+
+Definition at line 210 of file unit\+\_\+testing.\+h.
+
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structprogram__arguments_ab9717e16b92f14aa8c54dbf4a2d2b7b1}\label{structprogram__arguments_ab9717e16b92f14aa8c54dbf4a2d2b7b1}} 
+\index{program\_arguments@{program\_arguments}!ncore\_list@{ncore\_list}}
+\index{ncore\_list@{ncore\_list}!program\_arguments@{program\_arguments}}
+\doxysubsubsection{\texorpdfstring{ncore\_list}{ncore\_list}}
+{\footnotesize\ttfamily int program\+\_\+arguments\+::ncore\+\_\+list}
+
+Size of {\ttfamily core\+\_\+list} 
+
+Definition at line 225 of file unit\+\_\+testing.\+h.
+
+\mbox{\Hypertarget{structprogram__arguments_a48fbd16e4ce7ab5438078817c4931108}\label{structprogram__arguments_a48fbd16e4ce7ab5438078817c4931108}} 
+\index{program\_arguments@{program\_arguments}!nterm\_list@{nterm\_list}}
+\index{nterm\_list@{nterm\_list}!program\_arguments@{program\_arguments}}
+\doxysubsubsection{\texorpdfstring{nterm\_list}{nterm\_list}}
+{\footnotesize\ttfamily int program\+\_\+arguments\+::nterm\+\_\+list}
+
+Size of {\ttfamily term\+\_\+list} 
+
+Definition at line 229 of file unit\+\_\+testing.\+h.
+
+\mbox{\Hypertarget{structprogram__arguments_a8b96bf14afced6bae0d45424ab2fac57}\label{structprogram__arguments_a8b96bf14afced6bae0d45424ab2fac57}} 
+\index{program\_arguments@{program\_arguments}!ntests@{ntests}}
+\index{ntests@{ntests}!program\_arguments@{program\_arguments}}
+\doxysubsubsection{\texorpdfstring{ntests}{ntests}}
+{\footnotesize\ttfamily int program\+\_\+arguments\+::ntests}
+
+Size of {\ttfamily tests} 
+
+Definition at line 233 of file unit\+\_\+testing.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{unit__testing_8h}{unit\+\_\+testing.\+h}}\end{DoxyCompactItemize}

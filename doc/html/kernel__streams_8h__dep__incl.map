@@ -1,0 +1,8 @@
+<map id="kernel_streams.h" name="kernel_streams.h">
+<area shape="rect" id="node1" title="Support for I/O streams." alt="" coords="223,5,358,32"/>
+<area shape="rect" id="node2" href="$console_8c_source.html" title=" " alt="" coords="5,80,88,107"/>
+<area shape="rect" id="node3" href="$kernel__dev_8c_source.html" title=" " alt="" coords="113,80,215,107"/>
+<area shape="rect" id="node4" href="$kernel__init_8c_source.html" title=" " alt="" coords="240,80,341,107"/>
+<area shape="rect" id="node5" href="$kernel__proc_8c_source.html" title=" " alt="" coords="366,80,474,107"/>
+<area shape="rect" id="node6" href="$kernel__streams_8c_source.html" title=" " alt="" coords="499,80,632,107"/>
+</map>

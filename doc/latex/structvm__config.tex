@@ -1,0 +1,131 @@
+\hypertarget{structvm__config}{}\doxysection{vm\+\_\+config Struct Reference}
+\label{structvm__config}\index{vm\_config@{vm\_config}}
+
+
+Virtual machine configuration.  
+
+
+
+
+{\ttfamily \#include $<$bios.\+h$>$}
+
+
+
+Collaboration diagram for vm\+\_\+config\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=156pt]{structvm__config__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{bios_8h_a11aeb47c6c66d331acd12556d0d4aedc}{interrupt\+\_\+handler}} $\ast$ \mbox{\hyperlink{structvm__config_a9eb4f640012b1bcf02ae982e551b5767}{bootfunc}}
+\begin{DoxyCompactList}\small\item\em The function executed by each core of the VM at boot. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} \mbox{\hyperlink{structvm__config_a85a0847b581a23e35e25dd8b79d8b9d8}{cores}}
+\begin{DoxyCompactList}\small\item\em The number of CPU cores of the VM. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} \mbox{\hyperlink{structvm__config_a76113e6dea0361ab0e1dda35bf29b7bf}{serialno}}
+\begin{DoxyCompactList}\small\item\em The number of serial ports connected to terminals that the computer will support. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structvm__config_a4e88489ff8b42ce872cf1189673e2cc7}{serial\+\_\+in}} \mbox{[}\mbox{\hyperlink{bios_8h_a4e7d162c7c35103b42768ff4a5c73905}{MAX\+\_\+\+TERMINALS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em The array of file descriptors for input serial ports. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structvm__config_a53a39f43c3368fed51748c0b156a942c}{serial\+\_\+out}} \mbox{[}\mbox{\hyperlink{bios_8h_a4e7d162c7c35103b42768ff4a5c73905}{MAX\+\_\+\+TERMINALS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em The array of file descriptors for output serial ports. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Virtual machine configuration. 
+
+The configuration of the virtual machine consists of the following information\+:
+
+
+\begin{DoxyItemize}
+\item The boot function to execute on each core of the simulated machine, stored in {\ttfamily bootfunc}.
+\item The number of CPU cores of this VM, stored in {\ttfamily cores} 
+\item The number of serial devices of this VM, stored in {\ttfamily serialno} 
+\item For each serial device, two file descriptors must be provided\+: the keyboard ({\ttfamily serial\+\_\+in}) file descriptor will be read from and the console ({\ttfamily serial\+\_\+out}) file descriptor will be written to. These file descriptors should correspond to some pipe-\/like Linux stream (e.\+g., pipe, FIFO or socket). 
+\end{DoxyItemize}
+
+Definition at line 158 of file bios.\+h.
+
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structvm__config_a9eb4f640012b1bcf02ae982e551b5767}\label{structvm__config_a9eb4f640012b1bcf02ae982e551b5767}} 
+\index{vm\_config@{vm\_config}!bootfunc@{bootfunc}}
+\index{bootfunc@{bootfunc}!vm\_config@{vm\_config}}
+\doxysubsubsection{\texorpdfstring{bootfunc}{bootfunc}}
+{\footnotesize\ttfamily \mbox{\hyperlink{bios_8h_a11aeb47c6c66d331acd12556d0d4aedc}{interrupt\+\_\+handler}}$\ast$ vm\+\_\+config\+::bootfunc}
+
+
+
+The function executed by each core of the VM at boot. 
+
+When all cores return from this function, the virtual machine shuts down. 
+
+Definition at line 166 of file bios.\+h.
+
+\mbox{\Hypertarget{structvm__config_a85a0847b581a23e35e25dd8b79d8b9d8}\label{structvm__config_a85a0847b581a23e35e25dd8b79d8b9d8}} 
+\index{vm\_config@{vm\_config}!cores@{cores}}
+\index{cores@{cores}!vm\_config@{vm\_config}}
+\doxysubsubsection{\texorpdfstring{cores}{cores}}
+{\footnotesize\ttfamily \mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} vm\+\_\+config\+::cores}
+
+
+
+The number of CPU cores of the VM. 
+
+The number of cores must be between 1 and {\ttfamily MAX\+\_\+\+CORES}. 
+
+Definition at line 174 of file bios.\+h.
+
+\mbox{\Hypertarget{structvm__config_a4e88489ff8b42ce872cf1189673e2cc7}\label{structvm__config_a4e88489ff8b42ce872cf1189673e2cc7}} 
+\index{vm\_config@{vm\_config}!serial\_in@{serial\_in}}
+\index{serial\_in@{serial\_in}!vm\_config@{vm\_config}}
+\doxysubsubsection{\texorpdfstring{serial\_in}{serial\_in}}
+{\footnotesize\ttfamily int vm\+\_\+config\+::serial\+\_\+in\mbox{[}\mbox{\hyperlink{bios_8h_a4e7d162c7c35103b42768ff4a5c73905}{MAX\+\_\+\+TERMINALS}}\mbox{]}}
+
+
+
+The array of file descriptors for input serial ports. 
+
+Field {\ttfamily serialno} determines the number of file descriptors that must be valid in this structure. 
+
+Definition at line 193 of file bios.\+h.
+
+\mbox{\Hypertarget{structvm__config_a53a39f43c3368fed51748c0b156a942c}\label{structvm__config_a53a39f43c3368fed51748c0b156a942c}} 
+\index{vm\_config@{vm\_config}!serial\_out@{serial\_out}}
+\index{serial\_out@{serial\_out}!vm\_config@{vm\_config}}
+\doxysubsubsection{\texorpdfstring{serial\_out}{serial\_out}}
+{\footnotesize\ttfamily int vm\+\_\+config\+::serial\+\_\+out\mbox{[}\mbox{\hyperlink{bios_8h_a4e7d162c7c35103b42768ff4a5c73905}{MAX\+\_\+\+TERMINALS}}\mbox{]}}
+
+
+
+The array of file descriptors for output serial ports. 
+
+Field {\ttfamily serialno} determines the number of file descriptors that must be valid in this structure. 
+
+Definition at line 200 of file bios.\+h.
+
+\mbox{\Hypertarget{structvm__config_a76113e6dea0361ab0e1dda35bf29b7bf}\label{structvm__config_a76113e6dea0361ab0e1dda35bf29b7bf}} 
+\index{vm\_config@{vm\_config}!serialno@{serialno}}
+\index{serialno@{serialno}!vm\_config@{vm\_config}}
+\doxysubsubsection{\texorpdfstring{serialno}{serialno}}
+{\footnotesize\ttfamily \mbox{\hyperlink{bios_8h_a91ad9478d81a7aaf2593e8d9c3d06a14}{uint}} vm\+\_\+config\+::serialno}
+
+
+
+The number of serial ports connected to terminals that the computer will support. 
+
+The number of serial devices should be between 0 and {\ttfamily MAX\+\_\+\+TERMINALS}.
+
+The terminals can be accessed via pipes, which must already exist. The file descriptors for these pipes are passed in the {\ttfamily kbd} and {\ttfamily con} arrays of this structure. 
+
+Definition at line 186 of file bios.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{bios_8h}{bios.\+h}}\end{DoxyCompactItemize}

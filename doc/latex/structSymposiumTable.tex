@@ -1,0 +1,89 @@
+\hypertarget{structSymposiumTable}{}\doxysection{Symposium\+Table Struct Reference}
+\label{structSymposiumTable}\index{SymposiumTable@{SymposiumTable}}
+
+
+A symposium monitor.  
+
+
+
+
+{\ttfamily \#include $<$symposium.\+h$>$}
+
+
+
+Collaboration diagram for Symposium\+Table\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{structSymposiumTable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} \mbox{\hyperlink{structSymposiumTable_a8c36f26f523e6b2f99f6e70fff098de8}{mx}}
+\item 
+\mbox{\hyperlink{structsymposium__t}{symposium\+\_\+t}} $\ast$ \mbox{\hyperlink{structSymposiumTable_a4089e2778ba23eb79c4785eb5702f70f}{symp}}
+\item 
+\mbox{\hyperlink{symposium_8h_a9fced5fb7d50a8fa2e8ae45b0cae3520}{PHIL}} $\ast$ \mbox{\hyperlink{structSymposiumTable_a70507f28df670d0db2e59fc65309af08}{state}}
+\item 
+\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$ \mbox{\hyperlink{structSymposiumTable_a6daa1fdbfe8e836e72bfd6953bc91f6e}{hungry}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A symposium monitor. 
+
+Such an object must be shared between all philosopher threads/processes. 
+
+Definition at line 113 of file symposium.\+h.
+
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structSymposiumTable_a6daa1fdbfe8e836e72bfd6953bc91f6e}\label{structSymposiumTable_a6daa1fdbfe8e836e72bfd6953bc91f6e}} 
+\index{SymposiumTable@{SymposiumTable}!hungry@{hungry}}
+\index{hungry@{hungry}!SymposiumTable@{SymposiumTable}}
+\doxysubsubsection{\texorpdfstring{hungry}{hungry}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCondVar}{Cond\+Var}}$\ast$ Symposium\+Table\+::hungry}
+
+hungry\mbox{[}i\mbox{]} i=...N\+: condition var for philosophers 
+
+Definition at line 117 of file symposium.\+h.
+
+\mbox{\Hypertarget{structSymposiumTable_a8c36f26f523e6b2f99f6e70fff098de8}\label{structSymposiumTable_a8c36f26f523e6b2f99f6e70fff098de8}} 
+\index{SymposiumTable@{SymposiumTable}!mx@{mx}}
+\index{mx@{mx}!SymposiumTable@{SymposiumTable}}
+\doxysubsubsection{\texorpdfstring{mx}{mx}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} Symposium\+Table\+::mx}
+
+Monitor mutex 
+
+Definition at line 114 of file symposium.\+h.
+
+\mbox{\Hypertarget{structSymposiumTable_a70507f28df670d0db2e59fc65309af08}\label{structSymposiumTable_a70507f28df670d0db2e59fc65309af08}} 
+\index{SymposiumTable@{SymposiumTable}!state@{state}}
+\index{state@{state}!SymposiumTable@{SymposiumTable}}
+\doxysubsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily \mbox{\hyperlink{symposium_8h_a9fced5fb7d50a8fa2e8ae45b0cae3520}{PHIL}}$\ast$ Symposium\+Table\+::state}
+
+state\mbox{[}i\mbox{]} i=1...N\mbox{]}\+: Philosopher state 
+
+Definition at line 116 of file symposium.\+h.
+
+\mbox{\Hypertarget{structSymposiumTable_a4089e2778ba23eb79c4785eb5702f70f}\label{structSymposiumTable_a4089e2778ba23eb79c4785eb5702f70f}} 
+\index{SymposiumTable@{SymposiumTable}!symp@{symp}}
+\index{symp@{symp}!SymposiumTable@{SymposiumTable}}
+\doxysubsubsection{\texorpdfstring{symp}{symp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structsymposium__t}{symposium\+\_\+t}}$\ast$ Symposium\+Table\+::symp}
+
+The symposium definition 
+
+Definition at line 115 of file symposium.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{symposium_8h}{symposium.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,160 @@
+\hypertarget{group__proc}{}\doxysection{Processes}
+\label{group__proc}\index{Processes@{Processes}}
+
+
+The process table and process management.  
+
+
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structprocess__control__block}{process\+\_\+control\+\_\+block}}
+\begin{DoxyCompactList}\small\item\em Process Control Block. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef enum \mbox{\hyperlink{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}{pid\+\_\+state\+\_\+e}} \mbox{\hyperlink{group__proc_ga8b605a2dd67e6304da5b7cccb6ea8e61}{pid\+\_\+state}}
+\begin{DoxyCompactList}\small\item\em PID state. \end{DoxyCompactList}\item 
+typedef struct \mbox{\hyperlink{structprocess__control__block}{process\+\_\+control\+\_\+block}} \mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}}
+\begin{DoxyCompactList}\small\item\em Process Control Block. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}{pid\+\_\+state\+\_\+e}} \{ \mbox{\hyperlink{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05acc62d1576546f3245237e1b232d838b6}{FREE}}
+, \mbox{\hyperlink{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a4f34c5c191d6e0d028ca831b6c0b1571}{ALIVE}}
+, \mbox{\hyperlink{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a5dfb36109b24f39d54d5c3f48f53def8}{ZOMBIE}}
+ \}
+\begin{DoxyCompactList}\small\item\em PID state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__proc_ga82948cbeb57bb0b6e15d1f14f06a2db3}{initialize\+\_\+processes}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the process table. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}} $\ast$ \mbox{\hyperlink{group__proc_ga10cf45ea8bc92b00bd1f25553b9cf5c8}{get\+\_\+pcb}} (\mbox{\hyperlink{group__syscalls_gafac07f3170763932fac97b6eab2c3984}{Pid\+\_\+t}} pid)
+\begin{DoxyCompactList}\small\item\em Get the PCB for a PID. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group__syscalls_gafac07f3170763932fac97b6eab2c3984}{Pid\+\_\+t}} \mbox{\hyperlink{group__proc_ga110e884cb053244b18d1058751a78cfe}{get\+\_\+pid}} (\mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}} $\ast$pcb)
+\begin{DoxyCompactList}\small\item\em Get the PID of a PCB. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The process table and process management. 
+
+This file defines the PCB structure and basic helpers for process access. 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}\label{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}} 
+\index{Processes@{Processes}!PCB@{PCB}}
+\index{PCB@{PCB}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{PCB}{PCB}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structprocess__control__block}{process\+\_\+control\+\_\+block}} \mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}}}
+
+
+
+Process Control Block. 
+
+This structure holds all information pertaining to a process. \mbox{\Hypertarget{group__proc_ga8b605a2dd67e6304da5b7cccb6ea8e61}\label{group__proc_ga8b605a2dd67e6304da5b7cccb6ea8e61}} 
+\index{Processes@{Processes}!pid\_state@{pid\_state}}
+\index{pid\_state@{pid\_state}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{pid\_state}{pid\_state}}
+{\footnotesize\ttfamily typedef enum \mbox{\hyperlink{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}{pid\+\_\+state\+\_\+e}} \mbox{\hyperlink{group__proc_ga8b605a2dd67e6304da5b7cccb6ea8e61}{pid\+\_\+state}}}
+
+
+
+PID state. 
+
+A PID can be either free (no process is using it), ALIVE (some running process is using it), or ZOMBIE (a zombie process is using it). 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}\label{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}} 
+\index{Processes@{Processes}!pid\_state\_e@{pid\_state\_e}}
+\index{pid\_state\_e@{pid\_state\_e}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{pid\_state\_e}{pid\_state\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group__proc_ga4f133ac5f9b2ca9c1446889baee1dc05}{pid\+\_\+state\+\_\+e}}}
+
+
+
+PID state. 
+
+A PID can be either free (no process is using it), ALIVE (some running process is using it), or ZOMBIE (a zombie process is using it). \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FREE@{FREE}!Processes@{Processes}}\index{Processes@{Processes}!FREE@{FREE}}}\mbox{\Hypertarget{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05acc62d1576546f3245237e1b232d838b6}\label{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05acc62d1576546f3245237e1b232d838b6}} 
+FREE&The PID is free and available. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALIVE@{ALIVE}!Processes@{Processes}}\index{Processes@{Processes}!ALIVE@{ALIVE}}}\mbox{\Hypertarget{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a4f34c5c191d6e0d028ca831b6c0b1571}\label{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a4f34c5c191d6e0d028ca831b6c0b1571}} 
+ALIVE&The PID is given to a process. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ZOMBIE@{ZOMBIE}!Processes@{Processes}}\index{Processes@{Processes}!ZOMBIE@{ZOMBIE}}}\mbox{\Hypertarget{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a5dfb36109b24f39d54d5c3f48f53def8}\label{group__proc_gga4f133ac5f9b2ca9c1446889baee1dc05a5dfb36109b24f39d54d5c3f48f53def8}} 
+ZOMBIE&The PID is held by a zombie. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 27 of file kernel\+\_\+proc.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__proc_ga10cf45ea8bc92b00bd1f25553b9cf5c8}\label{group__proc_ga10cf45ea8bc92b00bd1f25553b9cf5c8}} 
+\index{Processes@{Processes}!get\_pcb@{get\_pcb}}
+\index{get\_pcb@{get\_pcb}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{get\_pcb()}{get\_pcb()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}}$\ast$ get\+\_\+pcb (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__syscalls_gafac07f3170763932fac97b6eab2c3984}{Pid\+\_\+t}}}]{pid }\end{DoxyParamCaption})}
+
+
+
+Get the PCB for a PID. 
+
+This function will return a pointer to the PCB of the process with a given PID. If the PID does not correspond to a process, the function returns {\ttfamily NULL}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid} & the pid of the process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the PCB of the process, or NULL. 
+\end{DoxyReturn}
+
+
+Definition at line 22 of file kernel\+\_\+proc.\+c.
+
+\mbox{\Hypertarget{group__proc_ga110e884cb053244b18d1058751a78cfe}\label{group__proc_ga110e884cb053244b18d1058751a78cfe}} 
+\index{Processes@{Processes}!get\_pid@{get\_pid}}
+\index{get\_pid@{get\_pid}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{get\_pid()}{get\_pid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__syscalls_gafac07f3170763932fac97b6eab2c3984}{Pid\+\_\+t}} get\+\_\+pid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__proc_ga91aaadf0c3f9cef2293a99c69795323f}{PCB}} $\ast$}]{pcb }\end{DoxyParamCaption})}
+
+
+
+Get the PID of a PCB. 
+
+This function will return the PID of the process whose PCB is pointed at by {\ttfamily pcb}. If the pcb does not correspond to a process, the function returns {\ttfamily NOPROC}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pcb} & the pcb of the process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the PID of the process, or NOPROC. 
+\end{DoxyReturn}
+
+
+Definition at line 27 of file kernel\+\_\+proc.\+c.
+
+\mbox{\Hypertarget{group__proc_ga82948cbeb57bb0b6e15d1f14f06a2db3}\label{group__proc_ga82948cbeb57bb0b6e15d1f14f06a2db3}} 
+\index{Processes@{Processes}!initialize\_processes@{initialize\_processes}}
+\index{initialize\_processes@{initialize\_processes}!Processes@{Processes}}
+\doxysubsubsection{\texorpdfstring{initialize\_processes()}{initialize\_processes()}}
+{\footnotesize\ttfamily void initialize\+\_\+processes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialize the process table. 
+
+This function is called during kernel initialization, to initialize any data structures related to process creation. 
+
+Definition at line 52 of file kernel\+\_\+proc.\+c.
+

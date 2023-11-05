@@ -1,0 +1,145 @@
+\hypertarget{kernel__cc_8c}{}\doxysection{kernel\+\_\+cc.\+c File Reference}
+\label{kernel__cc_8c}\index{kernel\_cc.c@{kernel\_cc.c}}
+
+
+The implementation for concurrency control .  
+
+
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}kernel\+\_\+sched.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}kernel\+\_\+proc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}kernel\+\_\+cc.\+h\char`\"{}}\newline
+Include dependency graph for kernel\+\_\+cc.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel__cc_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{kernel__cc_8c_a146046d778f29cb1d176fcbd4d066733}\label{kernel__cc_8c_a146046d778f29cb1d176fcbd4d066733}} 
+\#define {\bfseries MUTEX\+\_\+\+SPINS}~(\mbox{\hyperlink{bios_8h_aa02a29e5c8a1f4d68413eea0aaa09fba}{cpu\+\_\+cores}}()$>$1 ?  1000 \+: 10000)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__syscalls_ga1140be44df71d39edaf6a7262fb763ca}{Mutex\+\_\+\+Lock}} (\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} $\ast$lock)
+\begin{DoxyCompactList}\small\item\em Lock a mutex. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__syscalls_ga0b98d0315d0931d0c28104c36dd559c9}{Mutex\+\_\+\+Unlock}} (\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} $\ast$lock)
+\begin{DoxyCompactList}\small\item\em Unlock a mutex that you locked. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8c_abc2cf733db2b12d13a3f6e258f89dd2b}\label{kernel__cc_8c_abc2cf733db2b12d13a3f6e258f89dd2b}} 
+static void {\bfseries remove\+\_\+from\+\_\+ring} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv, \+\_\+\+\_\+cv\+\_\+waiter $\ast$w)
+\item 
+\mbox{\Hypertarget{kernel__cc_8c_a639afd8d38fd525e27bf8bb1fadf24ee}\label{kernel__cc_8c_a639afd8d38fd525e27bf8bb1fadf24ee}} 
+static int {\bfseries cv\+\_\+wait} (\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} $\ast$mutex, \mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv, enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}} cause, \mbox{\hyperlink{bios_8h_ae7291e5cd742fb9bc6d4aaa0d51bd0ee}{Timer\+Duration}} timeout)
+\item 
+\mbox{\Hypertarget{kernel__cc_8c_a57708cb3ca29d1a575df0af638ca7d8d}\label{kernel__cc_8c_a57708cb3ca29d1a575df0af638ca7d8d}} 
+static void {\bfseries cv\+\_\+signal} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\item 
+int \mbox{\hyperlink{group__syscalls_ga970dca2210b3f2ec8aedab7f542a9bf4}{Cond\+\_\+\+Wait}} (\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} $\ast$mutex, \mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Wait on a condition variable. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__syscalls_ga4e955b769339be9ea6a0c1bd4151c48f}{Cond\+\_\+\+Timed\+Wait}} (\mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} $\ast$mutex, \mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv, \mbox{\hyperlink{group__syscalls_gaf412159e5cef839836a5e7b19ee75d1c}{timeout\+\_\+t}} timeout)
+\begin{DoxyCompactList}\small\item\em Wait on a condition variable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__syscalls_ga43f64f8be273d2fe77d7de5f4b81e22d}{Cond\+\_\+\+Signal}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Signal a condition variable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__syscalls_ga8196aa2a48cad90742f254cc3b8fd351}{Cond\+\_\+\+Broadcast}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Notify all threads waiting at a condition variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8c_a64cbb83e8857ffaf703722363ac94f05}\label{kernel__cc_8c_a64cbb83e8857ffaf703722363ac94f05}} 
+void \mbox{\hyperlink{kernel__cc_8c_a64cbb83e8857ffaf703722363ac94f05}{kernel\+\_\+lock}} ()
+\begin{DoxyCompactList}\small\item\em Lock the kernel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8c_a8ca062a9a1c570f34398bd177cb96e58}\label{kernel__cc_8c_a8ca062a9a1c570f34398bd177cb96e58}} 
+void \mbox{\hyperlink{kernel__cc_8c_a8ca062a9a1c570f34398bd177cb96e58}{kernel\+\_\+unlock}} ()
+\begin{DoxyCompactList}\small\item\em Unlock the kernel. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{kernel__cc_8c_a1fad5a21e5010939e1e0ad711192bc6c}{kernel\+\_\+wait\+\_\+wchan}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv, enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}} cause, const char $\ast$wchan\+\_\+name, \mbox{\hyperlink{bios_8h_ae7291e5cd742fb9bc6d4aaa0d51bd0ee}{Timer\+Duration}} timeout)
+\begin{DoxyCompactList}\small\item\em Wait on a condition variable using the kernel lock. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__cc_8c_a167cdb3f2a2285becf553405210eb08a}{kernel\+\_\+signal}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Signal a kernel condition to one waiter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8c_a6ab8c1febc779de0c176d4e8a101ec5b}\label{kernel__cc_8c_a6ab8c1febc779de0c176d4e8a101ec5b}} 
+void \mbox{\hyperlink{kernel__cc_8c_a6ab8c1febc779de0c176d4e8a101ec5b}{kernel\+\_\+broadcast}} (\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$cv)
+\begin{DoxyCompactList}\small\item\em Signal a kernel condition to all waiters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__cc_8c_aeafd158aa175ab53b85bc55dc4bbd962}{kernel\+\_\+sleep}} (\mbox{\hyperlink{group__scheduler_ga6c969c169777f82c104cf73e501df70f}{Thread\+\_\+state}} newstate, enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}} cause)
+\begin{DoxyCompactList}\small\item\em Put thread to sleep, unlocking the kernel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} \mbox{\hyperlink{kernel__cc_8c_a57ffb2dcd44b56da47dc03b2f85d9480}{kernel\+\_\+mutex}} = \mbox{\hyperlink{group__syscalls_ga96be0bfc33e7e113099c7546798bec99}{MUTEX\+\_\+\+INIT}}
+\begin{DoxyCompactList}\small\item\em The kernel lock. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{kernel__cc_8c_a1c9aaa217ee98e133a7d199b5e0049f3}\label{kernel__cc_8c_a1c9aaa217ee98e133a7d199b5e0049f3}} 
+static int {\bfseries kernel\+\_\+sem} = 1
+\item 
+\mbox{\Hypertarget{kernel__cc_8c_addaf45de2e9f92b9eb5ed68cc1017e6f}\label{kernel__cc_8c_addaf45de2e9f92b9eb5ed68cc1017e6f}} 
+static \mbox{\hyperlink{structCondVar}{Cond\+Var}} {\bfseries kernel\+\_\+sem\+\_\+cv} = \mbox{\hyperlink{group__syscalls_ga6a7055a466bff255172e05f6ec82d792}{COND\+\_\+\+INIT}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The implementation for concurrency control . 
+
+Locks for scheduler and device drivers. Because we support multiple cores, we need to avoid race conditions with an interrupt handler on the same core, and also to avoid race conditions between cores. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{kernel__cc_8c_a167cdb3f2a2285becf553405210eb08a}\label{kernel__cc_8c_a167cdb3f2a2285becf553405210eb08a}} 
+\index{kernel\_cc.c@{kernel\_cc.c}!kernel\_signal@{kernel\_signal}}
+\index{kernel\_signal@{kernel\_signal}!kernel\_cc.c@{kernel\_cc.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_signal()}{kernel\_signal()}}
+{\footnotesize\ttfamily void kernel\+\_\+signal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$}]{cv }\end{DoxyParamCaption})}
+
+
+
+Signal a kernel condition to one waiter. 
+
+This call must be made 
+
+Definition at line 271 of file kernel\+\_\+cc.\+c.
+
+\mbox{\Hypertarget{kernel__cc_8c_aeafd158aa175ab53b85bc55dc4bbd962}\label{kernel__cc_8c_aeafd158aa175ab53b85bc55dc4bbd962}} 
+\index{kernel\_cc.c@{kernel\_cc.c}!kernel\_sleep@{kernel\_sleep}}
+\index{kernel\_sleep@{kernel\_sleep}!kernel\_cc.c@{kernel\_cc.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_sleep()}{kernel\_sleep()}}
+{\footnotesize\ttfamily void kernel\+\_\+sleep (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__scheduler_ga6c969c169777f82c104cf73e501df70f}{Thread\+\_\+state}}}]{state,  }\item[{enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}}}]{cause }\end{DoxyParamCaption})}
+
+
+
+Put thread to sleep, unlocking the kernel. 
+
+System calls should call this function instead of {\ttfamily sleep\+\_\+releasing}, as the kernel lock is not a mutex. 
+
+Definition at line 281 of file kernel\+\_\+cc.\+c.
+
+\mbox{\Hypertarget{kernel__cc_8c_a1fad5a21e5010939e1e0ad711192bc6c}\label{kernel__cc_8c_a1fad5a21e5010939e1e0ad711192bc6c}} 
+\index{kernel\_cc.c@{kernel\_cc.c}!kernel\_wait\_wchan@{kernel\_wait\_wchan}}
+\index{kernel\_wait\_wchan@{kernel\_wait\_wchan}!kernel\_cc.c@{kernel\_cc.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_wait\_wchan()}{kernel\_wait\_wchan()}}
+{\footnotesize\ttfamily int kernel\+\_\+wait\+\_\+wchan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCondVar}{Cond\+Var}} $\ast$}]{cv,  }\item[{enum \mbox{\hyperlink{group__scheduler_gaad787d8d80312ffca3c0f197b3a25fbe}{SCHED\+\_\+\+CAUSE}}}]{cause,  }\item[{const char $\ast$}]{wchan,  }\item[{\mbox{\hyperlink{bios_8h_ae7291e5cd742fb9bc6d4aaa0d51bd0ee}{Timer\+Duration}}}]{timeout }\end{DoxyParamCaption})}
+
+
+
+Wait on a condition variable using the kernel lock. 
+
+\begin{DoxyReturn}{Returns}
+1 if signalled, 0 if not 
+\end{DoxyReturn}
+
+
+Definition at line 252 of file kernel\+\_\+cc.\+c.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{kernel__cc_8c_a57ffb2dcd44b56da47dc03b2f85d9480}\label{kernel__cc_8c_a57ffb2dcd44b56da47dc03b2f85d9480}} 
+\index{kernel\_cc.c@{kernel\_cc.c}!kernel\_mutex@{kernel\_mutex}}
+\index{kernel\_mutex@{kernel\_mutex}!kernel\_cc.c@{kernel\_cc.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_mutex}{kernel\_mutex}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__syscalls_gaef2ec62cae8e0031fd19fc8b91083ade}{Mutex}} kernel\+\_\+mutex = \mbox{\hyperlink{group__syscalls_ga96be0bfc33e7e113099c7546798bec99}{MUTEX\+\_\+\+INIT}}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The kernel lock. 
+
+Kernel locking is provided by a semaphore, implemented as a monitor. A semaphre for kernel locking has advantages over a simple mutex. The main advantage is that {\ttfamily kernel\+\_\+mutex} is held for a very short time regardless of contention. Thus, in multicore machines, it allows for cores to be passed to other threads. 
+
+Definition at line 226 of file kernel\+\_\+cc.\+c.
+
