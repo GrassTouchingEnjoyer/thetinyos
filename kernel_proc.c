@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "kernel_cc.h"
 #include "kernel_proc.h"
+#include "kernel_sched.h"
 #include "kernel_streams.h"
 
 
@@ -15,7 +16,13 @@
 
  */
 
-/* The process table */
+
+
+
+
+
+///* The process table */_________________________________________________________________________
+
 PCB PT[MAX_PROC];
 unsigned int process_count;
 
@@ -23,18 +30,33 @@ PCB* get_pcb(Pid_t pid)
 {
   return PT[pid].pstate==FREE ? NULL : &PT[pid];
 }
+//________________________________________________________________________________________________
 
+
+
+
+
+
+//________________________________________________________________________________________________
 Pid_t get_pid(PCB* pcb)
 {
   return pcb==NULL ? NOPROC : pcb-PT;
 }
+//________________________________________________________________________________________________
 
-/* Initialize a PCB */
+
+
+
+
+
+///* Initialize a PCB */___________________________________________________________________________
+
 static inline void initialize_PCB(PCB* pcb)
 {
   pcb->pstate = FREE;
   pcb->argl = 0;
   pcb->args = NULL;
+  pcb->rlnode_init;
 
   for(int i=0;i<MAX_FILEID;i++)
     pcb->FIDT[i] = NULL;
@@ -45,10 +67,22 @@ static inline void initialize_PCB(PCB* pcb)
   rlnode_init(& pcb->exited_node, pcb);
   pcb->child_exit = COND_INIT;
 }
+//________________________________________________________________________________________________
 
 
-static PCB* pcb_freelist;
 
+
+
+//________________________________________________________________________________________________
+      static PCB* pcb_freelist;
+//________________________________________________________________________________________________
+
+
+
+
+
+
+//________________________________________________________________________________________________
 void initialize_processes()
 {
   /* initialize the PCBs */
@@ -71,11 +105,14 @@ void initialize_processes()
   if(Exec(NULL,0,NULL)!=0)
     FATAL("The scheduler process does not have pid==0");
 }
+//________________________________________________________________________________________________
 
 
-/*
-  Must be called with kernel_mutex held
-*/
+
+
+
+///*Must be called with kernel_mutex held*/_______________________________________________________
+
 PCB* acquire_PCB()
 {
   PCB* pcb = NULL;
@@ -89,10 +126,26 @@ PCB* acquire_PCB()
 
   return pcb;
 }
+//________________________________________________________________________________________________
 
-/*
-  Must be called with kernel_mutex held
-*/
+
+
+
+
+
+
+//________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+///*Must be called with kernel_mutex held*/_______________________________________________________
+
 void release_PCB(PCB* pcb)
 {
   pcb->pstate = FREE;
@@ -100,19 +153,23 @@ void release_PCB(PCB* pcb)
   pcb_freelist = pcb;
   process_count--;
 }
+//________________________________________________________________________________________________
 
 
-/*
- *
- * Process creation
- *
- */
 
-/*
-	This function is provided as an argument to spawn,
-	to execute the main thread of a process.
-*/
-void start_main_thread()
+
+
+
+
+
+
+//_________________!!! Process creation !!!_______________________________________________________
+//                                                        |
+//    This function is provided as an argument to spawn,  |
+//    to execute the main thread of a process.            |
+//________________________________________________________|
+
+void start_main_thread() 
 {
   int exitval;
 
@@ -123,14 +180,160 @@ void start_main_thread()
   exitval = call(argl,args);
   Exit(exitval);
 }
+//________________________________________________________________________________________________
 
 
-/*
-	System call to create a new process.
- */
+
+
+
+
+
+
+///* System call */_______________________________________________________________________________
+
+Pid_t sys_GetPid()
+{
+  return get_pid(CURPROC);
+}
+//________________________________________________________________________________________________
+
+
+
+
+
+//________________________________________________________________________________________________
+
+Pid_t sys_GetPPid()
+{
+  return get_pid(CURPROC->parent);
+}
+//________________________________________________________________________________________________
+
+
+
+
+
+
+//________________________________________________________________________________________________
+
+static void cleanup_zombie(PCB* pcb, int* status)
+{
+  if(status != NULL)
+    *status = pcb->exitval;
+
+  rlist_remove(& pcb->children_node);
+  rlist_remove(& pcb->exited_node);
+
+  release_PCB(pcb);
+}
+//________________________________________________________________________________________________
+
+
+
+
+
+
+//________________________________________________________________________________________________
+
+static Pid_t wait_for_specific_child(Pid_t cpid, int* status)
+{
+
+  /* Legality checks */
+  if((cpid<0) || (cpid>=MAX_PROC)) {
+    cpid = NOPROC;
+    goto finish;
+  }
+
+  PCB* parent = CURPROC;
+  PCB* child = get_pcb(cpid);
+  if( child == NULL || child->parent != parent)
+  {
+    cpid = NOPROC;
+    goto finish;
+  }
+
+  /* Ok, child is a legal child of mine. Wait for it to exit. */
+  while(child->pstate == ALIVE)
+    kernel_wait(& parent->child_exit, SCHED_USER);
+  
+  cleanup_zombie(child, status);
+  
+finish:
+  return cpid;
+}
+//________________________________________________________________________________________________
+
+
+
+
+
+
+//________________________________________________________________________________________________
+
+static Pid_t wait_for_any_child(int* status)
+{
+  Pid_t cpid;
+
+  PCB* parent = CURPROC;
+
+  /* !!! Make sure I have children !!! */
+
+  int no_children, has_exited;
+  while(1) {
+    no_children = is_rlist_empty(& parent->children_list);
+    if( no_children ) break;
+
+    has_exited = ! is_rlist_empty(& parent->exited_list);
+    if( has_exited ) break;
+
+    kernel_wait(& parent->child_exit, SCHED_USER);    
+  }
+
+  if(no_children)
+    return NOPROC;
+
+  PCB* child = parent->exited_list.next->pcb;
+  assert(child->pstate == ZOMBIE);
+  cpid = get_pid(child);
+  cleanup_zombie(child, status);
+
+  return cpid;
+}
+//________________________________________________________________________________________________
+
+
+
+
+
+//________________________________________________________________________________________________
+
+   Pid_t sys_WaitChild(Pid_t cpid, int* status)
+  {
+     /* Wait for specific child. */
+     if(cpid != NOPROC) {
+       return wait_for_specific_child(cpid, status);
+     }
+     /* Wait for any child */
+     else {
+       return wait_for_any_child(status);
+     }
+
+  }
+//________________________________________________________________________________________________
+
+
+
+
+
+
+
+///*System call to create a new process */________________________________________________________
+
 Pid_t sys_Exec(Task call, int argl, void* args)
 {
   PCB *curproc, *newproc;
+
+  PTCB *new_ptcb;
   
   /* The new process PCB */
   newproc = acquire_PCB();
@@ -173,117 +376,31 @@ Pid_t sys_Exec(Task call, int argl, void* args)
     newproc->args=NULL;
 
   /* 
-    Create and wake up the thread for the main function. This must be the last thing
+    Create and wake up the thread for the main function. This must be the last thing////////////////////////////////////////////////////////////////////
     we do, because once we wakeup the new thread it may run! so we need to have finished
     the initialization of the PCB.
+
    */
   if(call != NULL) {
     newproc->main_thread = spawn_thread(newproc, start_main_thread);
+
+
     wakeup(newproc->main_thread);
   }
-
 
 finish:
   return get_pid(newproc);
 }
+//________________________________________________________________________________________________
 
 
-/* System call */
-Pid_t sys_GetPid()
-{
-  return get_pid(CURPROC);
-}
 
 
-Pid_t sys_GetPPid()
-{
-  return get_pid(CURPROC->parent);
-}
 
 
-static void cleanup_zombie(PCB* pcb, int* status)
-{
-  if(status != NULL)
-    *status = pcb->exitval;
-
-  rlist_remove(& pcb->children_node);
-  rlist_remove(& pcb->exited_node);
-
-  release_PCB(pcb);
-}
 
 
-static Pid_t wait_for_specific_child(Pid_t cpid, int* status)
-{
-
-  /* Legality checks */
-  if((cpid<0) || (cpid>=MAX_PROC)) {
-    cpid = NOPROC;
-    goto finish;
-  }
-
-  PCB* parent = CURPROC;
-  PCB* child = get_pcb(cpid);
-  if( child == NULL || child->parent != parent)
-  {
-    cpid = NOPROC;
-    goto finish;
-  }
-
-  /* Ok, child is a legal child of mine. Wait for it to exit. */
-  while(child->pstate == ALIVE)
-    kernel_wait(& parent->child_exit, SCHED_USER);
-  
-  cleanup_zombie(child, status);
-  
-finish:
-  return cpid;
-}
-
-
-static Pid_t wait_for_any_child(int* status)
-{
-  Pid_t cpid;
-
-  PCB* parent = CURPROC;
-
-  /* Make sure I have children! */
-  int no_children, has_exited;
-  while(1) {
-    no_children = is_rlist_empty(& parent->children_list);
-    if( no_children ) break;
-
-    has_exited = ! is_rlist_empty(& parent->exited_list);
-    if( has_exited ) break;
-
-    kernel_wait(& parent->child_exit, SCHED_USER);    
-  }
-
-  if(no_children)
-    return NOPROC;
-
-  PCB* child = parent->exited_list.next->pcb;
-  assert(child->pstate == ZOMBIE);
-  cpid = get_pid(child);
-  cleanup_zombie(child, status);
-
-  return cpid;
-}
-
-
-Pid_t sys_WaitChild(Pid_t cpid, int* status)
-{
-  /* Wait for specific child. */
-  if(cpid != NOPROC) {
-    return wait_for_specific_child(cpid, status);
-  }
-  /* Wait for any child */
-  else {
-    return wait_for_any_child(status);
-  }
-
-}
-
+//________________________________________________________________________________________________
 
 void sys_Exit(int exitval)
 {
@@ -356,11 +473,20 @@ void sys_Exit(int exitval)
   /* Bye-bye cruel world */
   kernel_sleep(EXITED, SCHED_USER);
 }
+//________________________________________________________________________________________________
 
 
+
+
+
+
+
+
+//________________________________________________________________________________________________
 
 Fid_t sys_OpenInfo()
 {
 	return NOFILE;
 }
 
+//________________________________________________________________________________________________

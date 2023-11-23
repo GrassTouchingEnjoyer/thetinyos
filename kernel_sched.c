@@ -12,43 +12,73 @@
 #endif
 
 
-/********************************************
-	
-	Core table and CCB-related declarations.
-
- *********************************************/
-
-/* Core control blocks */
-CCB cctx[MAX_CORES];
+/*********************************************|
+|																							|
+|  Core table and CCB-related declarations.   |
+|																						  |
+**********************************************/
 
 
+
+//______________________________________________________________________________
+
+     /* Core control blocks */
+
+      CCB cctx[MAX_CORES];
+//______________________________________________________________________________
+
+
+
+
+//______________________________________________________________________________
 /* 
-	The current core's CCB. This must only be used in a 
-	non-preemtpive context.
- */
-#define CURCORE (cctx[cpu_core_id])
-
-/* 
-	The current thread. This is a pointer to the TCB of the thread 
-	currently executing on this core.
-
-	This must only be used in non-preemptive context.
+	    The current core's CCB. This must only be used in a 
+	    non-preemtpive context.
 */
-#define CURTHREAD (CURCORE.current_thread)
 
+      #define CURCORE (cctx[cpu_core_id])
+//______________________________________________________________________________
+
+
+
+
+
+//______________________________________________________________________________
+/* 
+//       █▀ █▀█ █▀ █ █ █    !!! NON-PREEMPTIVE CONTEXT ONLY !!!
+//       ▄█ █▄█ ▄█ ▄ ▄ ▄    -----------------------------------
+
+	     The current thread. This is a pointer to the TCB of the thread 
+	     currently executing on this core.
+
+	     This must only be used in non-preemptive context.
+*/
+
+       #define CURTHREAD (CURCORE.current_thread)                              
+
+//______________________________________________________________________________
+
+
+
+
+//______________________________________________________________________________
+
+//       █▀ █▀█ █▀ █ █ █    !!! PREEMPTIVE CONTEXT !!!
+//       ▄█ █▄█ ▄█ ▄ ▄ ▄         IMPORTANT STUFF 
 
 /*
-	This can be used in the preemptive context to
-	obtain the current thread.
- */
-TCB* cur_thread()
-{
-  int preempt = preempt_off;
-  TCB* cur = CURTHREAD;
-  if(preempt) preempt_on;
-  return cur;
-}
+	     This can be used in the preemptive context to
+	     obtain the current thread.
+*/
 
+       TCB* cur_thread()
+       {
+          int preempt = preempt_off;
+          TCB* cur = CURTHREAD;
+     			if(preempt) preempt_on;
+    		  return cur;
+   		 }
+//______________________________________________________________________________
 
 
 /*
@@ -59,7 +89,7 @@ TCB* cur_thread()
   can allocate the TCB at the top of the memory block used as the stack.
 
   +-------------+
-  |   TCB       |
+  |     TCB     |
   +-------------+
   |             |
   |    stack    |
@@ -152,7 +182,7 @@ static void thread_start()
 
 TCB* spawn_thread(PCB* pcb, void (*func)())
 {
-	/* The allocated thread size must be a multiple of page size */
+	/* The allocated thread size must be a multiple of page size */ 
 	TCB* tcb = (TCB*)allocate_thread(THREAD_SIZE);
 
 	/* Set the owner */

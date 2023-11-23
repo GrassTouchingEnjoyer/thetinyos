@@ -101,6 +101,8 @@ typedef struct thread_control_block {
 
 	PCB* owner_pcb; /**< @brief This is null for a free TCB */
 
+	PTCB* ptcb;
+
 	cpu_context_t context; /**< @brief The thread context */
 	Thread_type type; /**< @brief The type of thread */
 	Thread_state state; /**< @brief The state of the thread */
@@ -129,6 +131,34 @@ typedef struct thread_control_block {
 #endif
 
 } TCB;
+
+//_______________________________________________________________________
+
+typedef struct process_thread_control_block   // Declaration of PTCB
+{
+
+
+  TCB* tcb;                 // Pointer to control_thread block
+  Task task;                // Function of thread
+  rlnode ptcb_list_node;    // Node for PTCBs List
+
+
+  int argl;                 //  Funtion's argument length
+  void* args;               // Function's argument array
+
+
+  int exitval;              // Exit value of thread
+  int exited;              // Value for exited Thread
+  int detached;            // Value for detatched Thread
+
+  CondVar exit_cv;          // Condition variable of PTCB
+
+  int ref_count;            // Reference counter
+
+} PTCB; 
+
+//_______________________________________________________________________
+
 
 /** @brief Thread stack size.
 
