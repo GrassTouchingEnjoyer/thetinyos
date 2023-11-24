@@ -38,6 +38,7 @@ PCB* get_pcb(Pid_t pid)
 
 
 //________________________________________________________________________________________________
+
 Pid_t get_pid(PCB* pcb)
 {
   return pcb==NULL ? NOPROC : pcb-PT;
@@ -74,6 +75,7 @@ static inline void initialize_PCB(PCB* pcb)
 
 
 //________________________________________________________________________________________________
+
       static PCB* pcb_freelist;
 //________________________________________________________________________________________________
 
@@ -83,6 +85,7 @@ static inline void initialize_PCB(PCB* pcb)
 
 
 //________________________________________________________________________________________________
+
 void initialize_processes()
 {
   /* initialize the PCBs */
@@ -111,7 +114,7 @@ void initialize_processes()
 
 
 
-///*Must be called with kernel_mutex held*/_______________________________________________________
+//*Must be called with kernel_mutex held*/_______________________________________________________
 
 PCB* acquire_PCB()
 {
@@ -144,7 +147,7 @@ PCB* acquire_PCB()
 
 
 
-///*Must be called with kernel_mutex held*/_______________________________________________________
+//*Must be called with kernel_mutex held*/_______________________________________________________
 
 void release_PCB(PCB* pcb)
 {
@@ -160,10 +163,34 @@ void release_PCB(PCB* pcb)
 
 
 
+//________________________________________________________________________________________________| status: under construction
+
+void start_many_threads(){
+
+  int   exitval;
+
+  PTCB* ptcb = cur_thread()-> tcb_ptr_ptcb;
+
+  Task  call = ptcb-> task;
+
+  int   argl = ptcb-> argl; 
+  void* args = ptcb-> args;
+
+  exitval = call(argl,args);
+  ThreadExit(exitval);
+
+}
+//________________________________________________________________________________________________
 
 
 
-//_________________!!! Process creation !!!_______________________________________________________
+
+
+
+
+
+
+//________________!!! Process creation !!!________________________________________________________
 //                                                        |
 //    This function is provided as an argument to spawn,  |
 //    to execute the main thread of a process.            |

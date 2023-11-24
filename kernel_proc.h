@@ -19,7 +19,15 @@
 
 #include "tinyos.h"
 #include "kernel_sched.h"
+//____________________________________________________________________________________________
 
+
+
+
+
+
+
+//____________________________________________________________________________________________
 /**
   @brief PID state
 
@@ -32,13 +40,21 @@ typedef enum pid_state_e {
   ALIVE,  /**< @brief The PID is given to a process */
   ZOMBIE  /**< @brief The PID is held by a zombie */
 } pid_state;
+//____________________________________________________________________________________________
 
+
+
+
+
+
+//____________________________________________________________________________________________
 
 /**
   @brief Process Control Block.
 
   This structure holds all information pertaining to a process.
  */
+
 typedef struct process_control_block {
 
   pid_state  pstate;      /**< @brief The pid state for this PCB */
@@ -65,21 +81,37 @@ typedef struct process_control_block {
 
   FCB* FIDT[MAX_FILEID];  /**< @brief The fileid table of the process */
 
-  rlnode ptcb_list;
-  int thread_count; 
+  rlnode ptcb_list;       // List of ptcbs
+  int thread_count;       // Number of threads
 
 
 } PCB;
 
+//____________________________________________________________________________________________
 
+
+
+
+
+
+
+//____________________________________________________________________________________________
 /**
   @brief Initialize the process table.
 
   This function is called during kernel initialization, to initialize
   any data structures related to process creation.
 */
-void initialize_processes();
+        void initialize_processes();
+//____________________________________________________________________________________________
 
+
+
+
+
+
+
+//____________________________________________________________________________________________
 /**
   @brief Get the PCB for a PID.
 
@@ -90,8 +122,16 @@ void initialize_processes();
   @param pid the pid of the process 
   @returns A pointer to the PCB of the process, or NULL.
 */
-PCB* get_pcb(Pid_t pid);
+      PCB* get_pcb(Pid_t pid);
+//____________________________________________________________________________________________
 
+
+
+
+
+
+
+//____________________________________________________________________________________________
 /**
   @brief Get the PID of a PCB.
 
@@ -102,7 +142,9 @@ PCB* get_pcb(Pid_t pid);
   @param pcb the pcb of the process 
   @returns the PID of the process, or NOPROC.
 */
-Pid_t get_pid(PCB* pcb);
+      Pid_t get_pid(PCB* pcb);
+//____________________________________________________________________________________________
+
 
 /** @} */
 

@@ -81,8 +81,58 @@
 //______________________________________________________________________________
 
 
-/*
-   The thread layout.
+
+
+
+
+
+
+//______________________________________________________________________________|status: COMPLETED
+//
+//   Allocates memory for a PTCB very useful stuff
+//
+
+   		*PTCB ptcb_malloc(Task call, int argl, void* args)
+   		{
+
+   			PTCB* ptcb = (*PTCB)xmalloc(sizeof(PTCB));
+
+   			ptcb-> task = call; 
+   			ptcb-> argl = argl;
+   			ptcb-> args = args;
+
+   			
+   			ptcb-> exitval = 0;
+   			ptcb-> exited = 0;
+   			ptcb-> detached = 0;
+   			ptcb-> exit_cv = COND_INIT;
+
+
+   			ptcb-> refcount = 0;
+
+
+				//|parameters|
+				//|node of ptcb initialization , type of datatype|		 
+																									
+  			rlnode_init(&ptcb->ptcb_list_node,ptcb);
+
+
+  			return ptcb;
+   		}
+//______________________________________________________________________________		 
+
+
+
+
+
+
+
+
+
+//______________________________________________________________________________
+/*          								
+																
+   The thread layout.  
   --------------------
 
   On the x86 (Pentium) architecture, the stack grows upward. Therefore, we
