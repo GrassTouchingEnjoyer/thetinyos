@@ -401,24 +401,52 @@ Pid_t sys_Exec(Task call, int argl, void* args)
   }
   else
     newproc->args=NULL;
+//_________________________________________________________________________________________________________________________________________
 
-  /* 
-    Create and wake up the thread for the main function. This must be the last thing////////////////////////////////////////////////////////////////////
-    we do, because once we wakeup the new thread it may run! so we need to have finished
-    the initialization of the PCB.
+      /* _________________________________________________________________________________________
+         | Create and wake up the thread for the main function. This must be the last thing      |
+         | we do, because once we wakeup the new thread it may run! so we need to have finished  |
+         | the initialization of the PCB.                                                        |
+         |_______________________________________________________________________________________|
+                                        |                 |
+                                        | status  :  done |                                     
+                                        |_________________|                                      */
+  
 
-   */
-  if(call != NULL) {
-    newproc->main_thread = spawn_thread(newproc, start_main_thread);
+    rlnode_init(&newproc->ptcb_list,NULL);                                         // Initializing PCB thread queue                    
 
 
-    wakeup(newproc->main_thread);
-  }
+    if(call != NULL) {                                       
+      
+      init_ptcb = ptcb_malloc(call,argl,args);                          // Allocating memory to the new PTCB and giving it arguements
+
+      rlist_push_back(&newproc->ptcb_list, &init_ptcb->ptcb_list_node); // Pushing to the back tof the queue the new PTCB
+
+      init_ptcb-> tcb = spawn_thread(newproc,start_main_thread);        // Creating a thread and crown it as the main thread
+
+      newproc-> main_thread = init_ptcb-> tcb;                          // The thread pointer of PCB points to the thread in PTCB
+
+      init_ptcb-> tcb-> tcb_ptr_ptcb = init_ptcb;                       // The PTCB pointer in TCB, gets the new PTCB, to point to
+
+      newproc-> threadCount+ = 1;                                       // We increment the thread count by one
+
+      wakeup(init_ptcb->tcb);                                           // wake up main thread to be executed
+
+                                                              /* 
+
+                                                              | PAST CODE:
+
+                                                              |  newproc->main_thread = spawn_thread(newproc, start_main_thread);
+                                                              |  wakeup(newproc->main_thread); 
+
+                                                              */
+    }
+//_________________________________________________________________________________________________________________________________________
 
 finish:
   return get_pid(newproc);
 }
-//________________________________________________________________________________________________
+//________________________________________________________________________________________________|
 
 
 

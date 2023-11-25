@@ -3,8 +3,8 @@
 #include "kernel_sched.h"
 #include "kernel_proc.h"
 
-//___________________________________________________________________________________________________________________ status: ONGOING
-//                                                                                             | returns: thread ID |
+//_________________________________________________________________________________________________________________________________ 
+//                                                                                             | returns: thread ID | status: DONE
 // @brief Create a new thread in the current process.                                          |____________________|
 //
 
@@ -31,7 +31,7 @@
                                                                                                  // its thread count by one.
             wakeup(init_ptcb-> tcb);
 
-            return (Tid_t) init_ptcb->tcb;                                                       // !RETURN IS HERE! ////////////////////////////////////
+            return (Tid_t) init_ptcb;                                                            // !RETURN IS HERE! ////////////////////////////////////
     
         }
 
@@ -53,15 +53,15 @@
 
 
 
-//________________________________________________________
-//                                                       |  status: done
-//  @brief Return the Tid of the current thread.         |
+//_______________________________________________________________________________
+//                                                       |  status: DONE        |
+//  @brief Return the Tid of the current thread.         |  returns: thread ID  |
 //
     Tid_t sys_ThreadSelf()
     {
 
 
-	   return (Tid_t) cur_thread()-> ptcbPointer;
+	   return (Tid_t) cur_thread()-> ptcbPointer;         // It calls the current thread to give its ID (PTCB pointer)
 
 
     }
@@ -72,29 +72,72 @@
 
 
 
-//________________________________________________________
-//                                                       |
-//  @brief Join the given thread.                        |
-//
+//____________________________________________________________________________________________________________________________________________
+//                                                                                                                   |status: DONE           |
+//  @brief Join the given thread.                                                                                    |returns: integer status| 
+
 int sys_ThreadJoin(Tid_t tid, int* exitval)
 {
 
-
-
-
-/* 
-                   █  █ █▀▀ █▀▀█ █▀▀ 
-                   █▀▀█ █▀▀ █▄▄▀ █▀▀ 
-                   ▀  ▀ ▀▀▀ ▀ ▀▀ ▀▀▀
-*/
+    PTCB wait_upon_ptcb = (PTCB*)tid;  // Tid was casted as a PTCB pointer, as it was given
 
 
 
 
+    switch(wait_upon_ptcb){                                                               
+//_________________________________________|switch case
+   
+    case (NULL):                                   
+        return -1;
+        break;
+//_________________________________________|Check for if wait_upon_ptcb is NULL
+    
+    case (cur_thread()->wait_upon_ptcb):            
+        return -1;
+        break;
+//__________________________________________________________________|Check if the thread is calling itself 
+   
+    case (rlist_find(&CURPROC->ptcb_list,wait_upon_ptcb,NULL)==NULL):   
+        return -1;
+        break;
+//__________________________________________________________________|Check if the PTCB exists
+   
+   case(c-> detached == 1):             
+        return -1
+        break;
+//_________________________________________| Check the thread's (detached) condition variable
+   
+    } // end of switch case
 
-	return -1;
+    
+
+    wait_upon_ptcb-> refcount+ =1;                      // increment threads that wait for (wait_upon_ptcb)
+
+
+
+    while(wait_upon_ptcb->detached==0 && wait_upon_ptcb->exited==0){
+
+        kernel_wait(&ptcb->exit_cv,SCHED_USER);         // we must wait for if exited becomes 1 or detached becomes 1
+    }
+
+    if(wait_upon_ptcb->detached==1){                    // if after join the (wait_upon_ptcb) becomes 1, return -1
+        minRefCount(wait_upon_ptcb);
+        return -1;
+    }
+    
+
+    if(exitval!=NULL){
+        *exitval= wait_upon_ptcb->exitval;              // saves the exitval to the given adress
+    }
+
+
+    minRefCount(wait_upon_ptcb);
+
+
+	return 0;
 }
-//_______________________________________________________
+//                                                                                                                    |        
+//____________________________________________________________________________________________________________________|
 
 
 
@@ -152,4 +195,27 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
 
     }
+//_______________________________________________________
+
+
+
+
+
+
+
+
+
+//_________________________________________________________
+//                                                        |
+// this routine frees a PTCB for good looks and not pasta |
+
+   void minRefCount(PTCB* ptcb){
+
+        ptcb-> refcount--;
+
+        if(refcount==0){
+            rlist_remove(&ptcb->ptcb_list_node);
+            free(ptcb);
+        }
+   }
 //_______________________________________________________

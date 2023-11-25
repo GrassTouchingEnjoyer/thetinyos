@@ -90,18 +90,26 @@ enum SCHED_CAUSE {
 	SCHED_IDLE, /**< @brief The idle thread called yield */
 	SCHED_USER /**< @brief User-space code called yield */
 };
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
-  @brief The thread control block
+     @brief The thread control block
 
-  An object of this type is associated to every thread. In this object
-  are stored all the metadata that relate to the thread.
+     An object of this type is associated to every thread. In this object
+     are stored all the metadata that relate to the thread.
 */
 typedef struct thread_control_block {
 
 	PCB* owner_pcb; /**< @brief This is null for a free TCB */
 
-	PTCB* ptcb;
+	PTCB* tcb_ptr_ptcb; // HERE THIS IS THE PTCB POINTER !!!!!!!!!!!!!!!!!
 
 	cpu_context_t context; /**< @brief The thread context */
 	Thread_type type; /**< @brief The type of thread */
@@ -131,64 +139,106 @@ typedef struct thread_control_block {
 #endif
 
 } TCB;
+//__________________________________________________________________________________________________________
 
-//_______________________________________________________________________
 
-typedef struct process_thread_control_block   // Declaration of PTCB
+
+
+
+
+//__________________________________________________________________________________________________________
+
+typedef struct process_thread_control_block   // PTCB structure
 {
 
 
-  TCB* tcb;                 // Pointer to control_thread block
-  Task task;                // Function of thread
-  rlnode ptcb_list_node;    // Node for PTCBs List
+  TCB* tcb;                 // pointer to TCB
+
+  Task task;                // Function in PCB
+  rlnode ptcb_list_node;    // Node for PTCB list < PCB
+
+  int   argl;               // PCB
+  void* args;               // PCB
 
 
-  int argl;                 //  Funtion's argument length
-  void* args;               // Function's argument array
+  int exitval;             // exit value of thread
+  int exited;              // value for exited thread [0,1]
+  int detached;            // value for detatched Thread [0,1]
 
+  CondVar exit_cv;          // condition variable of PTCB
 
-  int exitval;              // Exit value of thread
-  int exited;              // Value for exited Thread
-  int detached;            // Value for detatched Thread
-
-  CondVar exit_cv;          // Condition variable of PTCB
-
-  int ref_count;            // Reference counter
+  int ref_count;            // reference counter it's combined with ThreadJoin good luck pal!! XD
 
 } PTCB; 
 
-//_______________________________________________________________________
+//__________________________________________________________________________________________________________
 
 
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /** @brief Thread stack size.
 
   The default thread stack size in TinyOS is 128 kbytes.
  */
 #define THREAD_STACK_SIZE (128 * 1024)
+//__________________________________________________________________________________________________________
 
-/************************
- *
- *      Scheduler
- *
- ************************/
+
+
+
+
+
+
+
+/***********************
+ |										 |
+ |     Scheduler       |
+ |                     |
+ **********************/
+
+
+
+
+
+//__________________________________________________________________________________________________________
 
 /** @brief Core control block.
 
   Per-core info in memory (basically scheduler-related). 
  */
-typedef struct core_control_block {
-	uint id; /**< @brief The core id */
+		typedef struct core_control_block {
+			uint id; /**< @brief The core id */
 
-	TCB* current_thread; /**< @brief Points to the thread currently owning the core */
-	TCB* previous_thread; /**< @brief Points to the thread that previously owned the core */
-	TCB idle_thread; /**< @brief Used by the scheduler to handle the core's idle thread */
+			TCB* current_thread; /**< @brief Points to the thread currently owning the core */
+			TCB* previous_thread; /**< @brief Points to the thread that previously owned the core */
+			TCB idle_thread; /**< @brief Used by the scheduler to handle the core's idle thread */
 
-} CCB;
+		} CCB;
+//__________________________________________________________________________________________________________
+
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 
 /** @brief the array of Core Control Blocks (CCB) for the kernel */
 extern CCB cctx[MAX_CORES];
+//__________________________________________________________________________________________________________
 
 
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /** 
   @brief The current thread.
 
@@ -200,21 +250,45 @@ extern CCB cctx[MAX_CORES];
 
   @returns a pointer to the TCB of the caller.
 */
-TCB* cur_thread();
+		TCB* cur_thread();
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /** 
   @brief The current process.
 
   This is a pointer to the PCB of the owner process of the current thread, 
   i.e., the thread currently executing on this core.
 */
-#define CURPROC (cur_thread()->owner_pcb)
+		#define CURPROC (cur_thread()->owner_pcb)
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief A timeout constant, denoting no timeout for sleep.
 */
-#define NO_TIMEOUT ((TimerDuration)-1)
+		#define NO_TIMEOUT ((TimerDuration)-1)
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
 	@brief Create a new thread.
 
@@ -230,8 +304,16 @@ TCB* cur_thread();
     @param func The function to execute in the new thread.
     @returns  A pointer to the TCB of the new thread, in the @c INIT state.
 */
-TCB* spawn_thread(PCB* pcb, void (*func)());
+		TCB* spawn_thread(PCB* pcb, void (*func)());
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief Wakeup a blocked thread.
 
@@ -242,8 +324,16 @@ TCB* spawn_thread(PCB* pcb, void (*func)());
   @returns 1 if the thread state was @c STOPPED or @c INIT, 0 otherwise
 
 */
-int wakeup(TCB* tcb);
+		int wakeup(TCB* tcb);
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /** 
   @brief Block the current thread.
 
@@ -274,8 +364,16 @@ int wakeup(TCB* tcb);
 	@param cause the cause of the sleep
 	@param timeout a timeout for the sleep, or 
    */
-void sleep_releasing(Thread_state newstate, Mutex* mx, enum SCHED_CAUSE cause, TimerDuration timeout);
+		void sleep_releasing(Thread_state newstate, Mutex* mx, enum SCHED_CAUSE cause, TimerDuration timeout);
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief Give up the CPU.
 
@@ -283,8 +381,16 @@ void sleep_releasing(Thread_state newstate, Mutex* mx, enum SCHED_CAUSE cause, T
   and possibly switch to a different thread. The scheduler may decide that 
   it will renew the quantum for the current thread.
  */
-void yield(enum SCHED_CAUSE cause);
+		void yield(enum SCHED_CAUSE cause);
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief Enter the scheduler.
 
@@ -292,15 +398,31 @@ void yield(enum SCHED_CAUSE cause);
   to enter the scheduler. When this function returns, the scheduler
   has stopped (there are no more active threads) and the 
 */
-void run_scheduler(void);
+		void run_scheduler(void);
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief Initialize the scheduler.
 
    This function is called during kernel initialization.
  */
-void initialize_scheduler(void);
+		void initialize_scheduler(void);
+//__________________________________________________________________________________________________________
 
+
+
+
+
+
+
+//__________________________________________________________________________________________________________
 /**
   @brief Quantum (in microseconds) 
 
@@ -309,5 +431,20 @@ void initialize_scheduler(void);
 #define QUANTUM (10000L)
 
 /** @} */
+//__________________________________________________________________________________________________________
+
+
+
+
+
+
+
+//_____________________________________________________________________________________________________________
+//____________________________________________________________________________________________| NEWER CHANGES |
+
+*PTCB ptcb_alloc(Task call, int argl, void* args);
+
+//____________________________________________________________________________________________
+
 
 #endif
