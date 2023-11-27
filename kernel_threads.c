@@ -3,8 +3,9 @@
 #include "kernel_sched.h"
 #include "kernel_proc.h"
 
-//_________________________________________________________________________________________________________________________________ 
-//                                                                                             | returns: thread ID | status: DONE
+//___________________________________________________________________________________________________________________ 
+//                                                                                             | returns: thread ID | 
+//                                                                                             | status: DONE       |
 // @brief Create a new thread in the current process.                                          |____________________|
 //
 
@@ -53,10 +54,14 @@
 
 
 
+
+
+
+
 //_______________________________________________________________________________
 //                                                       |  status: DONE        |
 //  @brief Return the Tid of the current thread.         |  returns: thread ID  |
-//
+//                                                       |______________________|
     Tid_t sys_ThreadSelf()
     {
 
@@ -66,7 +71,12 @@
 
     }
 
-//_______________________________________________________
+//______________________________________________________________________________________________________________
+
+
+
+
+
 
 
 
@@ -75,6 +85,7 @@
 //____________________________________________________________________________________________________________________________________________
 //                                                                                                                   |status: DONE           |
 //  @brief Join the given thread.                                                                                    |returns: integer status| 
+//                                                                                                                   |_______________________|
 
 int sys_ThreadJoin(Tid_t tid, int* exitval)
 {
@@ -90,26 +101,29 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
     case (NULL):                                   
         return -1;
         break;
+
 //_________________________________________|Check for if wait_upon_ptcb is NULL
+
     
     case (cur_thread()->wait_upon_ptcb):            
         return -1;
         break;
+
 //__________________________________________________________________|Check if the thread is calling itself 
    
     case (rlist_find(&CURPROC->ptcb_list,wait_upon_ptcb,NULL)==NULL):   
         return -1;
         break;
+
 //__________________________________________________________________|Check if the PTCB exists
    
    case(c-> detached == 1):             
         return -1
         break;
+
 //_________________________________________| Check the thread's (detached) condition variable
    
-    } // end of switch case
-
-    
+    }
 
     wait_upon_ptcb-> refcount+ =1;                      // increment threads that wait for (wait_upon_ptcb)
 
@@ -136,8 +150,12 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
 	return 0;
 }
-//                                                                                                                    |        
-//____________________________________________________________________________________________________________________|
+//                                                                                                                                      |        
+//______________________________________________________________________________________________________________________________________|
+
+
+
+
 
 
 
@@ -169,7 +187,10 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 	   return -1;
    }
 
-//_______________________________________________________
+//_______________________________________________________|
+
+
+
 
 
 
@@ -186,12 +207,7 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
 
 
-/* 
-                   █  █ █▀▀ █▀▀█ █▀▀ 
-                   █▀▀█ █▀▀ █▄▄▀ █▀▀ 
-                   ▀  ▀ ▀▀▀ ▀ ▀▀ ▀▀▀
-*/
-
+        PTCB* ptcb_for_exit = cur_thread()-
 
 
     }
