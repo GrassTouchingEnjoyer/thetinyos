@@ -134,8 +134,6 @@ void MSG(const char* format, ...)
 	Execution utilities
  */
 
-
-
 /*
     Terminal proxy.
  	---------------

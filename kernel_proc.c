@@ -57,7 +57,6 @@ static inline void initialize_PCB(PCB* pcb)
   pcb->pstate = FREE;
   pcb->argl = 0;
   pcb->args = NULL;
-  pcb->rlnode_init;
 
   for(int i=0;i<MAX_FILEID;i++)
     pcb->FIDT[i] = NULL;
@@ -360,7 +359,7 @@ Pid_t sys_Exec(Task call, int argl, void* args)
 {
   PCB *curproc, *newproc;
 
-  PTCB *new_ptcb;
+  PTCB *init_ptcb;
   
   /* The new process PCB */
   newproc = acquire_PCB();
@@ -418,7 +417,7 @@ Pid_t sys_Exec(Task call, int argl, void* args)
 
     if(call != NULL) {                                       
       
-      init_ptcb = ptcb_malloc(call,argl,args);                          // Allocating memory to the new PTCB and giving it arguements
+      init_ptcb = ptcb_alloc(call,argl,args);                           // Allocating memory to the new PTCB and giving it arguements
 
       rlist_push_back(&newproc->ptcb_list, &init_ptcb->ptcb_list_node); // Pushing to the back tof the queue the new PTCB
 
@@ -428,7 +427,7 @@ Pid_t sys_Exec(Task call, int argl, void* args)
 
       init_ptcb-> tcb-> tcb_ptr_ptcb = init_ptcb;                       // The PTCB pointer in TCB, gets the new PTCB, to point to
 
-      newproc-> threadCount+ = 1;                                       // We increment the thread count by one
+      newproc-> thread_count += 1;                                      // We increment the thread count by one
 
       wakeup(init_ptcb->tcb);                                           // wake up main thread to be executed
 
@@ -455,28 +454,30 @@ finish:
 
 
 
-//________________________________________________________________________________________________
+//____________________________________________________________________________________________________________________________________________
 
 void sys_Exit(int exitval)
 {
 
   PCB *curproc = CURPROC;  /* cache for efficiency */
 
-  /* First, store the exit status */
-  curproc->exitval = exitval;
 
-  /* 
-    Here, we must check that we are not the init task. 
-    If we are, we must wait until all child processes exit. 
-   */
-  if(get_pid(curproc)==1) {
+  if(get_pid(curproc)==1) { /* Here, we must check that we are not the init task. If we are, we must wait until all child processes exit. */
 
     while(sys_WaitChild(NOPROC,NULL)!=NOPROC);
 
-  } else {
+  } 
 
-    /* Reparent any children of the exiting process to the 
-       initial task */
+  curproc->exitval = exitval; /* First, store the exit status */
+
+  sys_ThreadExit(exitval); // new routine call
+//_____________________________________________________________________________________________________________________________________________
+
+  /*else {
+
+       Reparent any children of the exiting process to the 
+       initial task 
+
     PCB* initpcb = get_pcb(1);
     while(!is_rlist_empty(& curproc->children_list)) {
       rlnode* child = rlist_pop_front(& curproc->children_list);
@@ -484,14 +485,16 @@ void sys_Exit(int exitval)
       rlist_push_front(& initpcb->children_list, child);
     }
 
-    /* Add exited children to the initial task's exited list 
-       and signal the initial task */
+       Add exited children to the initial task's exited list 
+       and signal the initial task 
+
     if(!is_rlist_empty(& curproc->exited_list)) {
       rlist_append(& initpcb->exited_list, &curproc->exited_list);
       kernel_broadcast(& initpcb->child_exit);
     }
 
-    /* Put me into my parent's exited list */
+    Put me into my parent's exited list 
+
     rlist_push_front(& curproc->parent->exited_list, &curproc->exited_node);
     kernel_broadcast(& curproc->parent->child_exit);
 
@@ -501,17 +504,17 @@ void sys_Exit(int exitval)
   assert(is_rlist_empty(& curproc->exited_list));
 
 
-  /* 
+  
     Do all the other cleanup we want here, close files etc. 
-   */
+   
 
-  /* Release the args data */
+   Release the args data 
   if(curproc->args) {
     free(curproc->args);
     curproc->args = NULL;
   }
 
-  /* Clean up FIDT */
+   Clean up FIDT 
   for(int i=0;i<MAX_FILEID;i++) {
     if(curproc->FIDT[i] != NULL) {
       FCB_decref(curproc->FIDT[i]);
@@ -519,17 +522,20 @@ void sys_Exit(int exitval)
     }
   }
 
-  /* Disconnect my main_thread */
+   Disconnect my main_thread 
   curproc->main_thread = NULL;
 
-  /* Now, mark the process as exited. */
+   Now, mark the process as exited. 
   curproc->pstate = ZOMBIE;
 
-  /* Bye-bye cruel world */
+   Bye-bye cruel world 
   kernel_sleep(EXITED, SCHED_USER);
-}
-//________________________________________________________________________________________________
 
+
+}PAST CODE, MOVED TO THREAD EXIT AFTER DIVORCE, bad stuff*/
+
+//________________________________________________________________________________________________
+}
 
 
 

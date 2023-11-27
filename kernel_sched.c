@@ -92,10 +92,10 @@
 //   Allocates memory for a PTCB very useful stuff
 //
 
-   		*PTCB ptcb_malloc(Task call, int argl, void* args)
+   		PTCB* ptcb_alloc(Task call, int argl, void* args)
    		{
 
-   			PTCB* ptcb = (*PTCB)xmalloc(sizeof(PTCB));
+   			PTCB* ptcb = (PTCB*)xmalloc(sizeof(PTCB));
 
    			ptcb-> task = call; 
    			ptcb-> argl = argl;
@@ -108,7 +108,7 @@
    			ptcb-> exit_cv = COND_INIT;
 
 
-   			ptcb-> refcount = 0;
+   			ptcb-> ref_count = 0;
 
 
 				//|parameters|
