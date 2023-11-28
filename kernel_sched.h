@@ -38,11 +38,11 @@
   @see Thread_phase
 */
 typedef enum {
-	INIT, /**< @brief TCB initialising */
-	READY, /**< @brief A thread ready to be scheduled.   */
+	INIT,   /**< @brief TCB initialising */
+	READY,  /**< @brief A thread ready to be scheduled.   */
 	RUNNING, /**< @brief A thread running on some core   */
 	STOPPED, /**< @brief A blocked thread   */
-	EXITED /**< @brief A terminated thread   */
+	EXITED   /**< @brief A terminated thread   */
 } Thread_state;
 
 /** @brief Thread phase. 
@@ -106,6 +106,8 @@ enum SCHED_CAUSE {
      are stored all the metadata that relate to the thread.
 */
 typedef struct thread_control_block {
+
+	int priority;
 
 	PCB* owner_pcb; /**< @brief This is null for a free TCB */
 
