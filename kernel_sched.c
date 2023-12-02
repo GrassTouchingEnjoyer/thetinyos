@@ -20,8 +20,8 @@
 
 
 
-#define PRIORITY_QUEUES 10
-#define MAX_YIELDS 100
+#define PRIORITY_QUEUES 15
+#define MAX_YIELDS 500
 
 int yield_counter;
 
