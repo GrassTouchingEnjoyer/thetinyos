@@ -57,6 +57,9 @@ typedef enum pid_state_e {
 
 typedef struct process_control_block {
 
+  rlnode ptcb_list;       // List of ptcbs
+  int thread_count;       // Number of threads
+
   pid_state  pstate;      /**< @brief The pid state for this PCB */
 
   PCB* parent;            /**< @brief Parent's pcb. */
@@ -80,10 +83,6 @@ typedef struct process_control_block {
                              @c WaitChild() */
 
   FCB* FIDT[MAX_FILEID];  /**< @brief The fileid table of the process */
-
-  rlnode ptcb_list;       // List of ptcbs
-  int thread_count;       // Number of threads
-
 
 } PCB;
 
@@ -144,6 +143,11 @@ typedef struct process_control_block {
 */
       Pid_t get_pid(PCB* pcb);
 //____________________________________________________________________________________________
+
+      
+
+      void start_many_threads(); 
+      void start_main_thread();
 
 
 /** @} */

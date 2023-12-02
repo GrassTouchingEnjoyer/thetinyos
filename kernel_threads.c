@@ -14,21 +14,22 @@
     Tid_t sys_CreateThread(Task task, int argl, void* args)
     {
 
-        assert(task != NULL);                                                                    // For smooth debugging experience
-
         if(task != NULL)                                                                         // For if the task is NOT equal to NULL, 
         {                                                                                        // if it is not run the routine normally.
 
-            PTCB* init_ptcb;                                                                     // Initializing the new ptcb
+            PTCB* init_ptcb = NULL;                                                              // Initializing the new ptcb
             PCB* cur_proc = CURPROC;                                                             // current process is abducted      
 
-            init_ptcb = ptcb_alloc(task, argl, args);                                           // Giving arguements to the new ptcb
+            init_ptcb = ptcb_alloc(task, argl, args);                                            // Giving arguements to the new ptcb
 
-            rlist_push_back(&cur_proc-> ptcb_list , &init_ptcb-> ptcb_list_node);                   // Pushes to the back of current PCB's list,           
-                                                                                                 // the initialized PTCB 'node'.
+
+            init_ptcb-> tcb= spawn_thread(cur_proc,start_many_threads);                          // Spawning the new thread in ptcb. 
             
             init_ptcb-> tcb-> tcb_ptr_ptcb = init_ptcb;                                          // TCB gets, as a new arguement for its
                                                                                                  // PTCB pointer, the initialized PTCB pointer.
+
+            rlist_push_back(&cur_proc-> ptcb_list , &init_ptcb-> ptcb_list_node);                // Pushes to the back of current PCB's list,           
+                                                                                                 // the initialized PTCB 'node'.
 
             cur_proc-> thread_count += 1;                                                        // Increment the current process, 
                                                                                                  // its thread count by one.
@@ -90,22 +91,22 @@
 //                                                                                                                   |_______________________|
 
 int sys_ThreadJoin(Tid_t tid, int* exitval)
-{
+{   
 
     PTCB* wait_upon_ptcb = (PTCB*)tid;       // Tid was casted as a PTCB pointer, as it was given
-
-
                                             
     if (wait_upon_ptcb == NULL){return -1;}                                  
 //____________________________________________________________________________|Check for if wait_upon_ptcb is NULL
 
-    
+
     if (wait_upon_ptcb == cur_thread()-> tcb_ptr_ptcb){ return -1;}            
 //____________________________________________________________________________|Check if the thread is calling itself 
+
    
     if (rlist_find(&CURPROC->ptcb_list,wait_upon_ptcb,NULL)==NULL){return -1;}
       
 //____________________________________________________________________________|Check if the PTCB exists
+
    
    if(wait_upon_ptcb-> detached == 1){return -1;}
 
@@ -166,18 +167,20 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
 
         if(detach_ptcb == NULL){return -1;}
+
 //_______________________________________________________| if (detach_ptcb) does not exist 
-
-        if(detach_ptcb-> detached == 1){return -1;}
-//_______________________________________________________| if (detach_ptcb) is already detached
-
-        if(detach_ptcb-> exited == 1){return -1;}    
-//_______________________________________________________| if thread of ptcb it is exited
-
 
         if(rlist_find(&CURPROC->ptcb_list,detach_ptcb,NULL)==NULL){return -1;}
 
 //_____________________________________________________________________________| checks the thread/ptcb if it exists in its workload, good stuff!
+
+        if(detach_ptcb-> detached == 1){return -1;}
+
+//_______________________________________________________| if (detach_ptcb) is already detached
+
+        if(detach_ptcb-> exited == 1){return -1;}    
+
+//_______________________________________________________| if thread of ptcb it is exited
 
     detach_ptcb -> detached = 1;
 
@@ -308,7 +311,7 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
    void minRefCount(PTCB* ptcb){
 
-        ptcb-> ref_count-=1;
+        ptcb-> ref_count--;
 
         if(ptcb-> ref_count==0){
             rlist_remove(&ptcb->ptcb_list_node);

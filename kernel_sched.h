@@ -38,11 +38,11 @@
   @see Thread_phase
 */
 typedef enum {
-	INIT,   /**< @brief TCB initialising */
-	READY,  /**< @brief A thread ready to be scheduled.   */
+	INIT, /**< @brief TCB initialising */
+	READY, /**< @brief A thread ready to be scheduled.   */
 	RUNNING, /**< @brief A thread running on some core   */
 	STOPPED, /**< @brief A blocked thread   */
-	EXITED   /**< @brief A terminated thread   */
+	EXITED /**< @brief A terminated thread   */
 } Thread_state;
 
 /** @brief Thread phase. 
@@ -434,6 +434,7 @@ extern CCB cctx[MAX_CORES];
 
 /** @} */
 //__________________________________________________________________________________________________________
+
 
 
 
