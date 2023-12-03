@@ -19,12 +19,12 @@
 **********************************************/
 
 
+//______________________________________________________________________________
+	#define PRIORITY_QUEUES 15
+	#define MAX_YIELDS 500
 
-#define PRIORITY_QUEUES 15
-#define MAX_YIELDS 500
-
-int yield_counter;
-
+	int yield_counter;
+//______________________________________________________________________________
 
 //______________________________________________________________________________
 
@@ -243,8 +243,8 @@ static void thread_start()
 
 
 
-//________________________________________________________________________________________________
-/*
+//_________________________________________________________________________________________________
+/*																																															  |CHANGED
   Initialize and return a new TCB
 */
 
@@ -262,6 +262,7 @@ TCB* spawn_thread(PCB* pcb, void (*func)())
 	tcb->phase = CTX_CLEAN;
 	tcb->thread_func = func;
 	tcb->wakeup_time = NO_TIMEOUT;
+	tcb->priority = PRIORITY_QUEUES-1; // priority not from 1 but the PRIORITY_QUEUES variable 
 	rlnode_init(&tcb->sched_node, tcb); /* Intrusive list node */
 
 	tcb->its = QUANTUM;
@@ -338,7 +339,7 @@ void release_TCB(TCB* tcb)
   Both of these structures are protected by @c sched_spinlock.
 */
 
-rlnode SCHED[PRIORITY_QUEUES]; /* The scheduler queue */
+rlnode SCHED[PRIORITY_QUEUES]; /* The scheduler queue_____	CHANGED  _______-*/ 
 rlnode TIMEOUT_LIST; /* The list of threads with a timeout */
 Mutex sched_spinlock = MUTEX_INIT; /* spinlock for scheduler queue */
 
@@ -381,8 +382,8 @@ static void sched_register_timeout(TCB* tcb, TimerDuration timeout)
 
 
 
-//________________________________________________________________________________________________
-/*
+//_________________________________________________________________________________________________
+/*																																												  		  |CHANGED
   Add TCB to the end of the scheduler list.
 
   *** MUST BE CALLED WITH sched_spinlock HELD ***
@@ -395,7 +396,7 @@ static void sched_queue_add(TCB* tcb)
 	/* Restart possibly halted cores */
 	cpu_core_restart_one();
 }
-//________________________________________________________________________________________________
+//_________________________________________________________________________________________________|
 
 
 
@@ -457,9 +458,9 @@ static void sched_wakeup_expired_timeouts()
 
 
 
-//________________________________________________________________________________________________
-/*
-  Remove the head of the scheduler list, if any, and
+//______________________________________________________________________________________________
+/*																																												  	 | CHANGED
+  Remove the head of the scheduler list, if any, and 
   return it. Return NULL if the list is empty.
 
   UPDATE REMOVE THE HEADS OF MANY!!!!!!
@@ -472,20 +473,18 @@ static TCB* sched_queue_select(TCB* current)
 	rlnode* sel = NULL;
 	TCB* next_thread = NULL;
 
-	for(int i=0; i<PRIORITY_QUEUES; i++){
-		sel = rlist_pop_front(&SCHED[i]);
-		if(sel->tcb != NULL)
-			break;
+	for(int index=0; index<PRIORITY_QUEUES; index++) 				// A for loop was implimented for the  
+	{																												// many queues.
+		sel = rlist_pop_front(&SCHED[index]);
+	
+		if(sel->tcb != NULL)										  // If what we find is what we want break the loop 
+		break;
 	}
 	
-		if(sel==NULL){	
-		next_thread = NULL;
-	}else{
-		next_thread = sel->tcb;
-	}
+	next_thread = sel->tcb;											// declare the next thread to be (sel->tcb)
 
-	if (next_thread == NULL){
-		
+	if(next_thread == NULL)
+	{	
 		next_thread = (current-> state == READY) ? current : &CURCORE.idle_thread;
 	}
 
@@ -493,7 +492,7 @@ static TCB* sched_queue_select(TCB* current)
 
 	return next_thread;
 }
-//________________________________________________________________________________________________
+//______________________________________________________________________________________________|
 
 
 
@@ -571,8 +570,8 @@ void sleep_releasing(Thread_state state, Mutex* mx, enum SCHED_CAUSE cause,
 
 
 
-//________________________________________________________________________________________________
-/* This function is the entry point to the scheduler's context switching */
+//__________________________________________________________________________________________________
+// This function is the entry point to the scheduler's context switching 								    			 |CHANGED
 
 void yield(enum SCHED_CAUSE cause)
 {
@@ -595,24 +594,24 @@ void yield(enum SCHED_CAUSE cause)
 	current->last_cause = current->curr_cause;
 	current->curr_cause = cause;
 
-	switch(cause)   
+	switch(cause)   // ADDED SWITCH-CASE FOR THE (cause)
 	{
 			case SCHED_IO:
 				if(current->priority > 0){
-					current-> priority--;
+					current-> priority-=1;
 				}
 				break;
 
 			case SCHED_QUANTUM:
 				if(current->priority< PRIORITY_QUEUES-1){
-					current->priority++;
+					current->priority+=1;
 				}
 				break;
 
 			case SCHED_MUTEX:
 				if(current->last_cause == SCHED_MUTEX && current->curr_cause == SCHED_MUTEX && current->priority < PRIORITY_QUEUES-1){
 					if(current->priority>0){
-						current->priority++;
+						current->priority+=1;
 					}
 				}
 				break;
@@ -630,26 +629,43 @@ void yield(enum SCHED_CAUSE cause)
 	TCB* next = sched_queue_select(current);
 	assert(next != NULL);
 
+//___________________PRIORITY-BOOST_______________________
+
+	/*PRIORITY BOOSTING ROUTINE*/
+
 	rlnode* queue_tcb_ptr = NULL;
 	yield_counter++;
 
 
-	if(yield_counter >= MAX_YIELDS){
+	if(yield_counter >= MAX_YIELDS)    // If yield counter reaches a limit we must boost priority
+	{
 
-		for(int index=1 ; index<PRIORITY_QUEUES ; index++){
+		yield_counter=0;   // reinitializing yield counter to 0
 
-			if(!(is_rlist_empty(&SCHED[index]))){
-				queue_tcb_ptr= rlist_pop_back(&SCHED[index]);		
-				rlist_push_back(&SCHED[index-1],queue_tcb_ptr);
+		  for(int index=1 ; index<PRIORITY_QUEUES ; index++)	// Starting from 1 to avoid segmentation fault
+		  {
 
-			if(queue_tcb_ptr->tcb->priority>0){
-					queue_tcb_ptr->tcb->priority--;
-			}
+			  if(!(is_rlist_empty(&SCHED[index])))	// if SCHED is not empty 
+			  {
+					queue_tcb_ptr = &SCHED[index];	// getting the selected queue with the index from for
 
-			}
-		}
-		yield_counter=0;
-  }
+					while(queue_tcb_ptr->tcb != NULL)
+					{
+
+							queue_tcb_ptr->tcb->priority--;	// it looks like we reduce the priority but we boost it, the implimentation looks weird 
+
+							rlist_append(&SCHED[index--],queue_tcb_ptr); // append in to a higher priority queue
+						
+
+						if(queue_tcb_ptr->next != NULL){ queue_tcb_ptr = queue_tcb_ptr->next; } // using next to look if the next node exists
+						else{ break; }  // else break the while loop
+					}
+
+			  }
+		  }
+    }
+
+//__________________________________________________________
 
 	/* Save the current TCB for the gain phase */
 	CURCORE.previous_thread = current;
