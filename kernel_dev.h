@@ -11,6 +11,8 @@
 #include "bios.h"
 
 /**
+______________________________________________________________________________
+
   @file kernel_dev.h
   @brief Device management.
 
@@ -31,10 +33,15 @@
   for this device.
 
   @{ 
+______________________________________________________________________________
 */
 
 
+
+
 /**
+______________________________________________________________________________
+
   @brief The device-specific file operations table.
 
   This object contains pointers to device-specific functions for I/O. 
@@ -92,10 +99,15 @@ typedef struct file_operations {
     - There was a I/O runtime problem.
      */
     int (*Close)(void* this);
+
 } file_ops;
 
+//______________________________________________________________________________
 
 
+
+
+//______________________________________________________________________________
 /**
   @brief The device type.
 	
@@ -106,28 +118,39 @@ typedef enum {
 	DEV_SERIAL,  /**< @brief Serial device */
 	DEV_MAX      /**< @brief placeholder for maximum device number */
 }  Device_type;
+//______________________________________________________________________________
 
 
-/**
-  @brief Device control block.
 
-  These objects hold the information that is needed to 
-  access a particular device.
-*/
-typedef struct device_control_block
-{
-  Device_type type;     /**< @brief Device type. 
 
-                            Much like 'major number' in Unix, determines the driver. */
-  
-  uint devnum;           /**< @brief Number of devices for this major number.
-                          */
 
-  file_ops dev_fops;	/**< @brief Device operations
 
-  							This structure is provided by the device driver. */
-} DCB;
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+      /**
+        @brief Device control block.
 
+        These objects hold the information that is needed to 
+        access a particular device.
+      */
+        typedef struct device_control_block
+        {
+          Device_type type;     /**< @brief Device type. 
+
+                                    Much like 'major number' in Unix, determines the driver. */
+          
+          uint devnum;           /**< @brief Number of devices for this major number.
+                                  */
+
+          file_ops dev_fops;	/**< @brief Device operations
+
+          							This structure is provided by the device driver. */
+        } DCB;
+
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+
+
+//______________________________________________________________________________
 
 /** 
   @brief Initialization for devices.
@@ -135,7 +158,10 @@ typedef struct device_control_block
   This function is called at kernel startup.
  */
 void initialize_devices();
+//______________________________________________________________________________
 
+
+//______________________________________________________________________________
 
 /**
   @brief Open a device.
@@ -148,6 +174,11 @@ void initialize_devices();
   */
 int device_open(Device_type major, uint minor, void** obj, file_ops** ops);
 
+//______________________________________________________________________________
+
+
+
+//______________________________________________________________________________
 /**
   @brief Get the number of devices of a particular major number.
 
@@ -155,6 +186,7 @@ int device_open(Device_type major, uint minor, void** obj, file_ops** ops);
   namely 0<= minor < M.
   */
 uint device_no(Device_type major);
+//______________________________________________________________________________
 
 /** @} */
 

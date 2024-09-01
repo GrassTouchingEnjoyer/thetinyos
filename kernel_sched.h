@@ -98,7 +98,7 @@ enum SCHED_CAUSE {
 
 
 
-//__________________________________________________________________________________________________________
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 /**
      @brief The thread control block
 
@@ -129,7 +129,7 @@ typedef struct thread_control_block {
 	enum SCHED_CAUSE curr_cause; /**< @brief The endcause for the current time-slice */
 	enum SCHED_CAUSE last_cause; /**< @brief The endcause for the last time-slice */
 
-#ifndef NVALGRIND
+	#ifndef NVALGRIND
 	unsigned valgrind_stack_id; /**< @brief Valgrind helper for stacks. 
 
 	  This is useful in order to register the thread stack to the valgrind memory profiler. 
@@ -141,14 +141,15 @@ typedef struct thread_control_block {
 #endif
 
 } TCB;
-//__________________________________________________________________________________________________________
+
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 
 
 
 
 
-//__________________________________________________________________________________________________________
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 typedef struct process_thread_control_block   // PTCB structure
 {
@@ -173,7 +174,7 @@ typedef struct process_thread_control_block   // PTCB structure
 
 } PTCB; 
 
-//__________________________________________________________________________________________________________
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 
 

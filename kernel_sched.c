@@ -21,7 +21,7 @@
 
 //______________________________________________________________________________
 	#define PRIORITY_QUEUES 15
-	#define MAX_YIELDS 500
+	#define MAX_YIELDS 300
 
 	int yield_counter;
 //______________________________________________________________________________
@@ -262,7 +262,6 @@ TCB* spawn_thread(PCB* pcb, void (*func)())
 	tcb->phase = CTX_CLEAN;
 	tcb->thread_func = func;
 	tcb->wakeup_time = NO_TIMEOUT;
-	tcb->priority = PRIORITY_QUEUES-1; // priority not from 1 but the PRIORITY_QUEUES variable 
 	rlnode_init(&tcb->sched_node, tcb); /* Intrusive list node */
 
 	tcb->its = QUANTUM;
@@ -594,32 +593,6 @@ void yield(enum SCHED_CAUSE cause)
 	current->last_cause = current->curr_cause;
 	current->curr_cause = cause;
 
-	switch(cause)   // ADDED SWITCH-CASE FOR THE (cause)
-	{
-			case SCHED_IO:
-				if(current->priority > 0){
-					current-> priority-=1;
-				}
-				break;
-
-			case SCHED_QUANTUM:
-				if(current->priority< PRIORITY_QUEUES-1){
-					current->priority+=1;
-				}
-				break;
-
-			case SCHED_MUTEX:
-				if(current->last_cause == SCHED_MUTEX && current->curr_cause == SCHED_MUTEX && current->priority < PRIORITY_QUEUES-1){
-					if(current->priority>0){
-						current->priority+=1;
-					}
-				}
-				break;
-
-			default:
-				break;
-	}	
-
 	/* Wake up threads whose sleep timeout has expired */
 	sched_wakeup_expired_timeouts();
 
@@ -629,7 +602,36 @@ void yield(enum SCHED_CAUSE cause)
 	TCB* next = sched_queue_select(current);
 	assert(next != NULL);
 
-//___________________PRIORITY-BOOST_______________________
+//___________________________________________________________________________________________________________________________________
+	switch(cause)   // ADDED SWITCH-CASE FOR THE (cause)
+	{
+			case SCHED_IO:
+				if(current->priority > 0){
+					current-> priority = current-> priority - 1;
+				}
+				break;
+
+			case SCHED_QUANTUM:
+				if(current->priority < PRIORITY_QUEUES-1){
+					current-> priority = current-> priority + 1;
+				}
+				break;
+
+			case SCHED_MUTEX:
+				if(current->last_cause == SCHED_MUTEX && current->curr_cause == SCHED_MUTEX && current->priority < PRIORITY_QUEUES-1)
+				{	
+					
+					current-> priority = current-> priority + 1;	
+				}
+				
+				break;
+
+			default:
+
+				break;
+	}	
+
+//___________________________________________________________PRIORITY-BOOST______________________________________________________________
 
 	/*PRIORITY BOOSTING ROUTINE*/
 
@@ -652,20 +654,22 @@ void yield(enum SCHED_CAUSE cause)
 					while(queue_tcb_ptr->tcb != NULL)
 					{
 
-							queue_tcb_ptr->tcb->priority--;	// it looks like we reduce the priority but we boost it, the implimentation looks weird 
+						if(queue_tcb_ptr->tcb->priority > 0)
+						{
 
-							rlist_append(&SCHED[index--],queue_tcb_ptr); // append in to a higher priority queue
-						
+							queue_tcb_ptr->tcb->priority--;	// it looks like we reduce the priority but we boost it, the implimentation looks weird 	
+
+							rlist_push_back(&SCHED[index--],queue_tcb_ptr);
+						}
 
 						if(queue_tcb_ptr->next != NULL){ queue_tcb_ptr = queue_tcb_ptr->next; } // using next to look if the next node exists
 						else{ break; }  // else break the while loop
 					}
-
 			  }
 		  }
     }
 
-//__________________________________________________________
+//___________________________________________________________________________________________________________________________________________
 
 	/* Save the current TCB for the gain phase */
 	CURCORE.previous_thread = current;

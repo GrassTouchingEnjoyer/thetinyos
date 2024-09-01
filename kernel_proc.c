@@ -476,12 +476,149 @@ void sys_Exit(int exitval)
 
 
 
+//_______________________________________________________________________TASK MANAGER____________________________________________________________________________________
 
-//________________________________________________________________________________________________
+int procinfo_read(void* info,  char *buffer, unsigned int size)
+{
+
+  procinfo_cb* Proc_info = (procinfo_cb*) info;
+  
+  if(Proc_info == NULL){ return 0; }                         // Check Proc_info validity
+
+  if(Proc_info->pcb_cursor > MAX_PROC-1){ return 0; }        // Check if cursor is over the MAX_PCB limit
+
+
+  PCB* Cur_pcb = &PT[Proc_info->pcb_cursor];                 // Look for Proc_info in Process Table with + the value of Proc_info cursor   
+
+
+  while(Cur_pcb == NULL || Cur_pcb->pstate == FREE)          // Look for available PCBs in Process Table 
+  {
+    Proc_info->pcb_cursor++;                                 // in while keep adding +1 to cursor to keep searching
+    Cur_pcb = &PT[Proc_info->pcb_cursor];                    
+  }  
+
+                                                             // IF YOU DO take every value and SEND IT to Proc_info struct
+
+//-------------------passing all the values to Proc_info------------------------------
+
+  Proc_info->current_info->pid = get_pid(Cur_pcb);
+  Proc_info->current_info->ppid = get_pid(Cur_pcb->parent);
+
+  Proc_info->current_info->alive = (Cur_pcb->pstate == ALIVE);
+
+  Proc_info->current_info->thread_count = Cur_pcb->thread_count;
+
+  Proc_info->current_info->main_task = Cur_pcb->main_task;
+  Proc_info->current_info->argl = Cur_pcb->argl;
+
+  memcpy(Proc_info->current_info->args, (char*)&Cur_pcb->args,PROCINFO_MAX_ARGS_SIZE);
+
+//--------------------------------------------------------------------------------------
+
+
+  int unexpected_total_size;                                          // just making sure
+
+  if (size > sizeof(procinfo)){unexpected_total_size = sizeof(procinfo);} 
+
+    else {unexpected_total_size = size;}
+
+
+  memcpy(buffer,(char*)Proc_info->current_info,unexpected_total_size); // we give as arguements the buffer, we cast as char pointer the Proc_info->current_info who we want to give the info from 
+                                                                       // unexpected_total_size is the sizeof(procinfo) we just check if it it unexpextedly larger that sizeof(procinfo).
+  
+  Proc_info->pcb_cursor++;                                             // next in line
+
+  return unexpected_total_size;
+}
+//____________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+//________________________________
+
+int procinfo_close(void* info) {
+
+  if(info == NULL){return NOFILE;}
+
+  free(info);
+
+  return 0;
+}
+//_______________________________
+
+
+
+
+
+
+//_________________________________
+static file_ops procinfo_file_ops = {
+  .Open = NULL,
+  .Read = procinfo_read,
+  .Write = noo_write,
+  .Close = procinfo_close
+};
+//_________________________________
+
+
+
+
+
+
+//__________________________________________________________________________________________________________________________________
 
 Fid_t sys_OpenInfo()
 {
-	return NOFILE;
-}
+  Fid_t Fd;
+  FCB* fcb;
 
-//________________________________________________________________________________________________
+  if (FCB_reserve(1,&Fd,&fcb) == 0){return NOFILE;}
+
+  procinfo_cb* Proc_info = (procinfo_cb*) xmalloc(sizeof(procinfo_cb)); // initialize  procinfo control block 
+  Proc_info->current_info = (procinfo*) xmalloc(sizeof(procinfo));      // point where to take current info from
+  Proc_info->pcb_cursor = 0;  
+  fcb->streamobj = Proc_info;           // for the new fcb's streamobj is proc info
+  fcb->streamfunc = &procinfo_file_ops; // file operations
+
+  return Fd;
+}
+//__________________________________________________________________________________________________________________________________
+
+
+/*
+typedef struct procinfo
+{
+  Pid_t pid;      The pid of the process. 
+  Pid_t ppid;     The parent pid of the process.
+
+                   This is equal to NOPROC for parentless procs.
+  
+  int alive;        Non-zero if process is alive, zero if process is zombie.
+  
+  unsigned long thread_count;  Current no of threads. 
+  
+  Task main_task;  The main task of the process. 
+  
+  int argl;        Argument length of main task. 
+
+            Note that this is the
+            real argument length, not just the length of the @c args field, which is
+            limited at PROCINFO_MAX_ARGS_SIZE. 
+
+  char args[PROCINFO_MAX_ARGS_SIZE]; 
+  
+} procinfo;
+*/
+
+
+
+//__________________________________________________________________
+int noo_write(){
+
+  return 0;
+}
+//__________________________________________________________________

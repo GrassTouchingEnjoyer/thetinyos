@@ -47,8 +47,14 @@ typedef enum pid_state_e {
 
 
 
-//____________________________________________________________________________________________
 
+
+
+
+
+
+
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 /**
   @brief Process Control Block.
 
@@ -86,9 +92,18 @@ typedef struct process_control_block {
 
 } PCB;
 
-//____________________________________________________________________________________________
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 
+
+
+
+
+typedef struct procinfo_control_block          
+{
+  procinfo* current_info;
+  uint pcb_cursor;
+}procinfo_cb;
 
 
 
@@ -148,6 +163,7 @@ typedef struct process_control_block {
 
       void start_many_threads(); 
       void start_main_thread();
+      int  noo_write();
 
 
 /** @} */

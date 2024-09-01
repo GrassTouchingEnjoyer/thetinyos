@@ -174,10 +174,6 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
 //_____________________________________________________________________________| checks the thread/ptcb if it exists in its workload, good stuff!
 
-        if(detach_ptcb-> detached == 1){return -1;}
-
-//_______________________________________________________| if (detach_ptcb) is already detached
-
         if(detach_ptcb-> exited == 1){return -1;}    
 
 //_______________________________________________________| if thread of ptcb it is exited
@@ -229,13 +225,25 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
         curproc-> thread_count-= 1; // Decrease thread count.
 
-//___________________________________________________________________________________________________
 
      if(curproc->thread_count==0)    // check if it is the last thread
     {
+//___________________________________________________________________________________________________
+
       if(get_pid(curproc)!=1)
       
       {
+//_______________________________________CLEAN UP DETACHED___________________________________________
+//                                                                                                  |
+   /*
+        rlnode *detached_ptcb = NULL;
+
+        if(!is_rlist_empty(&curproc->ptcb_list))
+        {
+            printf("")
+        }
+    */
+//___________________________________________________________________________________________________| I LOVE MY LIFE :D
 
       /* Reparent any children of the exiting process to the 
          initial task */
@@ -262,9 +270,9 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
 
     }
 
+
     assert(is_rlist_empty(& curproc->children_list));
     assert(is_rlist_empty(& curproc->exited_list));
-
 
     /* 
       Do all the other cleanup we want here, close files etc. 
@@ -293,6 +301,8 @@ int sys_ThreadJoin(Tid_t tid, int* exitval)
     curproc->pstate = ZOMBIE;
 
   }
+
+
 
     /* Bye-bye cruel world */
     kernel_sleep(EXITED, SCHED_USER);
