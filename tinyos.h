@@ -714,6 +714,7 @@ int ShutDown(Fid_t sock, shutdown_mode how);
 	This structure is returned by information streams.
 	@see OpenInfo
   */
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 typedef struct procinfo
 {
 	Pid_t pid;	    /**< @brief The pid of the process. */
@@ -738,7 +739,7 @@ typedef struct procinfo
     If the task's argument is longer (as designated by the @c argl field), the
     bytes contained in this field are just the prefix.  */
 } procinfo;
-
+//████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 /**
 	@brief Open a kernel information stream.
